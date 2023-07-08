@@ -2,6 +2,7 @@ import 'package:flutter_tiktok/pages/homePage.dart';
 import 'package:flutter_tiktok/style/style.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 void main() {
   
@@ -24,8 +25,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Tiktok',
+    return GetMaterialApp(
+      title: 'Xstream',
       theme: ThemeData(
         brightness: Brightness.dark,
         hintColor: Colors.white,
