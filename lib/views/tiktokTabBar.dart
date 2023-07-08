@@ -34,7 +34,7 @@ class TikTokTabBar extends StatelessWidget {
           child: GestureDetector(
             child: SelectText(
               isSelect: current == TikTokPageTag.home,
-              title: '首页',
+              title: 'Home',
             ),
             onTap: () => onTabSwitch?.call(TikTokPageTag.home),
           ),
@@ -43,7 +43,7 @@ class TikTokTabBar extends StatelessWidget {
           child: GestureDetector(
             child: SelectText(
               isSelect: current == TikTokPageTag.follow,
-              title: '关注',
+              title: 'Follow',
             ),
             onTap: () => onTabSwitch?.call(TikTokPageTag.follow),
           ),
@@ -61,7 +61,7 @@ class TikTokTabBar extends StatelessWidget {
           child: GestureDetector(
             child: SelectText(
               isSelect: current == TikTokPageTag.msg,
-              title: '消息',
+              title: 'Message',
             ),
             onTap: () => onTabSwitch?.call(TikTokPageTag.msg),
           ),
@@ -70,7 +70,7 @@ class TikTokTabBar extends StatelessWidget {
           child: GestureDetector(
             child: SelectText(
               isSelect: current == TikTokPageTag.me,
-              title: '我',
+              title: 'Profile',
             ),
             onTap: () => onTabSwitch?.call(TikTokPageTag.me),
           ),
