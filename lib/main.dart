@@ -6,18 +6,18 @@ import 'package:get/get.dart';
 
 void main() {
   
-  if (kReleaseMode) {
-    ErrorWidget.builder = (FlutterErrorDetails flutterErrorDetails) {
-      debugPrint(flutterErrorDetails.toString());
-      return Material(
-        child: Center(
-            child: Text(
-          "发生了没有处理的错误\n请通知开发者",
-          textAlign: TextAlign.center,
-        )),
-      );
-    };
-  }
+  // if (kReleaseMode) {
+  //   ErrorWidget.builder = (FlutterErrorDetails flutterErrorDetails) {
+  //     debugPrint(flutterErrorDetails.toString());
+  //     return Material(
+  //       child: Center(
+  //           child: Text(
+  //         "发生了没有处理的错误\n请通知开发者",
+  //         textAlign: TextAlign.center,
+  //       )),
+  //     );
+  //   };
+  // }
   runApp(MyApp());
 }
 
