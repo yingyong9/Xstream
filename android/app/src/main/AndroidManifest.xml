@@ -2,7 +2,7 @@
     package="com.yingyong.xstream">
    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="flutter_tiktok"
+        android:label="Xstream"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
