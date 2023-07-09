@@ -1,24 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_tiktok/pages/homePage.dart';
 import 'package:flutter_tiktok/style/style.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp().then((value) {
+    runApp(MyApp());
+  });
+
   
-  // if (kReleaseMode) {
-  //   ErrorWidget.builder = (FlutterErrorDetails flutterErrorDetails) {
-  //     debugPrint(flutterErrorDetails.toString());
-  //     return Material(
-  //       child: Center(
-  //           child: Text(
-  //         "发生了没有处理的错误\n请通知开发者",
-  //         textAlign: TextAlign.center,
-  //       )),
-  //     );
-  //   };
-  // }
-  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

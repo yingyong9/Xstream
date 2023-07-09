@@ -1,9 +1,12 @@
 import 'package:flutter_tiktok/mock/video.dart';
+import 'package:flutter_tiktok/models/video_model.dart';
 import 'package:flutter_tiktok/pages/cameraPage.dart';
 import 'package:flutter_tiktok/pages/followPage.dart';
 import 'package:flutter_tiktok/pages/searchPage.dart';
 import 'package:flutter_tiktok/pages/userPage.dart';
 import 'package:flutter_tiktok/style/physics.dart';
+import 'package:flutter_tiktok/utility/app_controller.dart';
+import 'package:flutter_tiktok/utility/app_service.dart';
 import 'package:flutter_tiktok/views/tikTokCommentBottomSheet.dart';
 import 'package:flutter_tiktok/views/tikTokHeader.dart';
 import 'package:flutter_tiktok/views/tikTokScaffold.dart';
@@ -12,6 +15,7 @@ import 'package:flutter_tiktok/views/tikTokVideoButtonColumn.dart';
 import 'package:flutter_tiktok/controller/tikTokVideoListController.dart';
 import 'package:flutter_tiktok/views/tiktokTabBar.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:safemap/safemap.dart';
 import 'package:video_player/video_player.dart';
 
@@ -34,7 +38,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   Map<int, bool> favoriteMap = {};
 
-  List<UserVideo> videoDataList = [];
+  List<VideoModel> videoDataList = [];
+
+  AppController appController = Get.put(AppController());
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
@@ -52,41 +58,44 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    videoDataList = UserVideo.fetchVideo();
-    WidgetsBinding.instance.addObserver(this);
-    _videoListController.init(
-      pageController: _pageController,
-      initialList: videoDataList
-          .map(
-            (e) => VPVideoController(
-              videoInfo: e,
-              builder: () => VideoPlayerController.network(e.url),
-            ),
-          )
-          .toList(),
-      videoProvider: (int index, List<VPVideoController> list) async {
-        return videoDataList
+    AppService().readAllVideo().then((value) {
+      // videoDataList = UserVideo.fetchVideo();
+      videoDataList = appController.videoModels;
+      WidgetsBinding.instance.addObserver(this);
+      _videoListController.init(
+        pageController: _pageController,
+        initialList: videoDataList
             .map(
               (e) => VPVideoController(
                 videoInfo: e,
                 builder: () => VideoPlayerController.network(e.url),
               ),
             )
-            .toList();
-      },
-    );
-    _videoListController.addListener(() {
-      setState(() {});
+            .toList(),
+        videoProvider: (int index, List<VPVideoController> list) async {
+          return videoDataList
+              .map(
+                (e) => VPVideoController(
+                  videoInfo: e,
+                  builder: () => VideoPlayerController.network(e.url),
+                ),
+              )
+              .toList();
+        },
+      );
+      _videoListController.addListener(() {
+        setState(() {});
+      });
+      tkController.addListener(
+        () {
+          if (tkController.value == TikTokPagePositon.middle) {
+            _videoListController.currentPlayer.play();
+          } else {
+            _videoListController.currentPlayer.pause();
+          }
+        },
+      );
     });
-    tkController.addListener(
-      () {
-        if (tkController.value == TikTokPagePositon.middle) {
-          _videoListController.currentPlayer.play();
-        } else {
-          _videoListController.currentPlayer.pause();
-        }
-      },
-    );
 
     super.initState();
   }
