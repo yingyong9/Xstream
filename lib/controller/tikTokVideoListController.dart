@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter_tiktok/mock/video.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tiktok/models/video_model.dart';
 import 'package:video_player/video_player.dart';
 
 typedef LoadMoreVideo = Future<List<VPVideoController>> Function(
@@ -174,7 +175,7 @@ class VPVideoController extends TikTokVideoController<VideoPlayerController> {
   VideoPlayerController? _controller;
   ValueNotifier<bool> _showPauseIcon = ValueNotifier<bool>(false);
 
-  final UserVideo? videoInfo;
+  final VideoModel? videoInfo;
 
   final ControllerBuilder<VideoPlayerController> _builder;
   final ControllerSetter<VideoPlayerController>? _afterInit;

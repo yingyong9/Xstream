@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
 import 'dart:io';
 
 Socket? socket;
@@ -13,6 +15,8 @@ var videoList = [
   'test-video-4.mp4',
 ];
 
+String urlVideo = 'https://stream115.otaro.co.th:443/vod/mp4:GitConfig.mp4/playlist.m3u8';
+
 class UserVideo {
   final String url;
   final String image;
@@ -24,10 +28,18 @@ class UserVideo {
     this.desc,
   });
 
+  // static List<UserVideo> fetchVideo() {
+  //   List<UserVideo> list = videoList
+  //       .map((e) => UserVideo(
+  //           image: '', url: 'https://static.ybhospital.net/$e', desc: '$e'))
+  //       .toList();
+  //   return list;
+  // }
+
   static List<UserVideo> fetchVideo() {
     List<UserVideo> list = videoList
         .map((e) => UserVideo(
-            image: '', url: 'https://static.ybhospital.net/$e', desc: '$e'))
+            image: '', url: urlVideo, desc: '$e'))
         .toList();
     return list;
   }
@@ -36,4 +48,25 @@ class UserVideo {
   String toString() {
     return 'image:$image' '\nvideo:$url';
   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'url': url,
+      'image': image,
+      'desc': desc,
+    };
+  }
+
+  factory UserVideo.fromMap(Map<String, dynamic> map) {
+    return UserVideo(
+      url: (map['url'] ?? '') as String,
+      image: (map['image'] ?? '') as String,
+      desc: map['desc'] != null ? map['desc'] as String : null,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory UserVideo.fromJson(String source) =>
+      UserVideo.fromMap(json.decode(source) as Map<String, dynamic>);
 }
