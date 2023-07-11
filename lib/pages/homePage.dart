@@ -1,5 +1,6 @@
 import 'package:flutter_tiktok/mock/video.dart';
 import 'package:flutter_tiktok/models/video_model.dart';
+import 'package:flutter_tiktok/pages/authen.dart';
 import 'package:flutter_tiktok/pages/cameraPage.dart';
 import 'package:flutter_tiktok/pages/followPage.dart';
 import 'package:flutter_tiktok/pages/searchPage.dart';
@@ -129,22 +130,30 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       hasBackground: hasBackground,
       current: tabBarType,
       onTabSwitch: (type) async {
-        setState(() {
-          tabBarType = type;
-          if (type == TikTokPageTag.home) {
-            _videoListController.currentPlayer.play();
-          } else {
-            _videoListController.currentPlayer.pause();
-          }
-        });
+        if (appController.currentUserModels.isEmpty) {
+          Get.to(const Authen());
+        } else {
+          setState(() {
+            tabBarType = type;
+            if (type == TikTokPageTag.home) {
+              _videoListController.currentPlayer.play();
+            } else {
+              _videoListController.currentPlayer.pause();
+            }
+          });
+        }
       },
       onAddButton: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            fullscreenDialog: true,
-            builder: (context) => CameraPage(),
-          ),
-        );
+        if (appController.currentUserModels.isEmpty) {
+          Get.to(const Authen());
+        } else {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              fullscreenDialog: true,
+              builder: (context) => CameraPage(),
+            ),
+          );
+        }
       },
     );
 
@@ -187,11 +196,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             scrollDirection: Axis.vertical,
             itemCount: _videoListController.videoCount,
             itemBuilder: (context, i) {
-              // 拼一个视频组件出来
               bool isF = SafeMap(favoriteMap)[i].boolean;
               var player = _videoListController.playerOfIndex(i)!;
               var data = player.videoInfo!;
-              // 右侧按钮列
+
               Widget buttons = TikTokButtonColumn(
                 isFavorite: isF,
                 onAvatar: () {
@@ -222,7 +230,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               );
 
               currentVideo = TikTokVideoPage(
-                // 手势播放与自然播放都会产生暂停按钮状态变化，待处理
                 hidePauseIcon: !player.showPauseIcon.value,
                 aspectRatio: 9 / 16.0,
                 key: Key(data.url + '$i'),
