@@ -56,7 +56,7 @@ class StandardTextStyle {
 }
 
 class ColorPlate {
-  // 配色
+  
   static const Color orange = const Color(0xffFFC459);
   static const Color yellow = const Color(0xffF1E300);
   static const Color green = const Color(0xff7ED321);
@@ -68,9 +68,9 @@ class ColorPlate {
   static const Color white = const Color(0xffffffff);
   static const Color clear = const Color(0);
 
-  /// 深色背景
+  
   static const Color back1 = const Color(0xff1D1F22);
 
-  /// 比深色背景略深一点
+  
   static const Color back2 = const Color(0xff121314);
 }
