@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tiktok/models/otp_require_thaibulk.dart';
+import 'package:flutter_tiktok/models/user_model.dart';
 import 'package:flutter_tiktok/models/video_model.dart';
+import 'package:flutter_tiktok/pages/homePage.dart';
 import 'package:flutter_tiktok/utility/app_constant.dart';
 import 'package:flutter_tiktok/utility/app_controller.dart';
 import 'package:flutter_tiktok/utility/app_snackbar.dart';
@@ -32,6 +35,47 @@ class AppService {
           //Everything OK
 
           AppSnackBar(title: 'OTP True', message: 'Welcome').normalSnackBar();
+
+          await FirebaseFirestore.instance
+              .collection('user')
+              .where('phone', isEqualTo: phoneNumber)
+              .get()
+              .then((value) async {
+            if (value.docs.isEmpty) {
+              //ยังไม่สมัครสมาชิค
+
+              await FirebaseAuth.instance
+                  .createUserWithEmailAndPassword(
+                      email: 'email$phoneNumber@xstream.com',
+                      password: '123456')
+                  .then((value) async {
+                String uid = value.user!.uid;
+                UserModel userModel = UserModel(
+                    name: 'Khun$phoneNumber',
+                    uid: uid,
+                    urlAvatar: AppConstant.urlAvatar,
+                    phone: phoneNumber);
+                await FirebaseFirestore.instance
+                    .collection('user')
+                    .doc(uid)
+                    .set(userModel.toMap())
+                    .then((value) {
+                  findCurrentUserModel()
+                      .then((value) => Get.offAll(HomePage()));
+                });
+              }).catchError((onError) {});
+            } else {
+              //เป็นสมาชิกแล้ว
+              print('เป็นสมาชิกแล้ว');
+              await FirebaseAuth.instance
+                  .signInWithEmailAndPassword(
+                      email: 'email$phoneNumber@xstream.com',
+                      password: '123456')
+                  .then((value) {
+                findCurrentUserModel().then((value) => Get.offAll(HomePage()));
+              });
+            }
+          });
 
           // readAllUserModel().then((value) async {
           //   UserModel? havePhoneUserModel;
@@ -119,6 +163,32 @@ class AppService {
         VideoModel videoModel = VideoModel.fromMap(element.data());
         appController.videoModels.add(videoModel);
       }
+    });
+  }
+
+  Future<void> findCurrentUserModel() async {
+    var user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      await FirebaseFirestore.instance
+          .collection('user')
+          .doc(user.uid)
+          .get()
+          .then((value) {
+        if (value.data() != null) {
+          UserModel userModel = UserModel.fromMap(value.data()!);
+          appController.currentUserModels.add(userModel);
+        }
+      });
+    }
+  }
+
+  Future<void> processSignOut() async {
+    await FirebaseAuth.instance.signOut().then((value) {
+      appController.currentUserModels.clear();
+      Get.offAll(HomePage());
+      AppSnackBar(title: 'Sign Out Success', message: 'Sign Out Success')
+          .normalSnackBar();
     });
   }
 }

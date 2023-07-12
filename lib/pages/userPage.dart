@@ -33,7 +33,7 @@ class _UserPageState extends State<UserPage> {
         children: <Widget>[
           Tapped(
             child: _UserRightButton(
-              title: widget.isSelfPage ? '钱包' : '关注',
+              title: widget.isSelfPage ? 'AA' : 'BB',
             ),
           ),
         ],

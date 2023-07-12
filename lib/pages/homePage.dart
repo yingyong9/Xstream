@@ -59,6 +59,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   void initState() {
+    AppService().findCurrentUserModel();
+
     AppService().readAllVideo().then((value) {
       // videoDataList = UserVideo.fetchVideo();
       videoDataList = appController.videoModels;

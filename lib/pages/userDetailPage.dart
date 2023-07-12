@@ -1,9 +1,8 @@
 import 'package:flutter_tiktok/style/style.dart';
+import 'package:flutter_tiktok/utility/app_service.dart';
 import 'package:flutter_tiktok/views/tilTokAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:tapped/tapped.dart';
-
-
 
 class UserDetailPage extends StatefulWidget {
   @override
@@ -14,7 +13,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
   @override
   Widget build(BuildContext context) {
     Widget head = TikTokAppbar(
-      title: '用户',
+      title: 'AA',
     );
     var userHead = Row(
       children: <Widget>[
@@ -93,6 +92,16 @@ class _UserDetailPageState extends State<UserDetailPage> {
             style: StandardTextStyle.small,
           ),
         ),
+        _UserInfoRow(
+          title: 'Sign Out',
+          rightIcon: Text(
+            'ออกจากระบบ',
+            style: StandardTextStyle.small,
+          ),
+          onTap: () {
+            AppService().processSignOut();
+          },
+        ),
       ],
     );
     body = Center(
@@ -129,7 +138,7 @@ class _UserInfoRow extends StatelessWidget {
   final Widget? icon;
   final Widget? rightIcon;
   final String? title;
-  final Function? onTap;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
