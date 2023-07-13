@@ -163,6 +163,10 @@ class AppService {
   }
 
   Future<void> readAllVideo() async {
+    if (appController.videoModels.isNotEmpty) {
+      appController.videoModels.clear();
+    }
+
     await FirebaseFirestore.instance.collection('video').get().then((value) {
       for (var element in value.docs) {
         VideoModel videoModel = VideoModel.fromMap(element.data());
@@ -214,7 +218,8 @@ class AppService {
         VideoModel videoModel = VideoModel(
             url:
                 'https://stream115.otaro.co.th:443/vod/mp4:$nameFile/playlist.m3u8',
-            image: nameFile,
+            image: '',
+            desc: nameFile,
             timestamp: Timestamp.fromDate(DateTime.now()));
         FirebaseFirestore.instance
             .collection('video')
@@ -222,6 +227,8 @@ class AppService {
             .set(videoModel.toMap())
             .then((value) {
           print('Insert Data Video Success');
+          AppSnackBar(title: 'Upload Video Success', message: 'Thankyou')
+              .normalSnackBar();
         });
       }
     }

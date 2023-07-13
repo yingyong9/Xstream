@@ -61,6 +61,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   void initState() {
     AppService().findCurrentUserModel();
 
+    homePageLoadVideo();
+
+    super.initState();
+  }
+
+  void homePageLoadVideo() {
     AppService().readAllVideo().then((value) {
       // videoDataList = UserVideo.fetchVideo();
       videoDataList = appController.videoModels;
@@ -99,8 +105,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         },
       );
     });
-
-    super.initState();
   }
 
   @override
@@ -156,7 +160,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           //   ),
           // );
 
-          Get.to( CameraPage());
+          Get.to(CameraPage())!.then((value) => homePageLoadVideo());
         }
       },
     );
