@@ -1,7 +1,12 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/material.dart';
+import 'package:flutter_tiktok/utility/app_service.dart';
+import 'package:flutter_tiktok/views/widget_back_button.dart';
+import 'package:flutter_tiktok/views/widget_text.dart';
+import 'package:tapped/tapped.dart';
+
 import 'package:flutter_tiktok/style/style.dart';
 import 'package:flutter_tiktok/views/tikTokVideoButtonColumn.dart';
-import 'package:flutter/material.dart';
-import 'package:tapped/tapped.dart';
 
 class CameraPage extends StatefulWidget {
   @override
@@ -15,26 +20,27 @@ class _CameraPageState extends State<CameraPage> {
       children: <Widget>[
         _CameraIconButton(
           icon: Icons.repeat,
-          title: '翻转',
+          title: '11',
         ),
         _CameraIconButton(
           icon: Icons.tonality,
-          title: '速度',
+          title: '22',
         ),
         _CameraIconButton(
           icon: Icons.texture,
-          title: '滤镜',
+          title: '22',
         ),
         _CameraIconButton(
           icon: Icons.sentiment_satisfied,
-          title: '美化',
+          title: '44',
         ),
         _CameraIconButton(
           icon: Icons.timer,
-          title: '计时关',
+          title: '55',
         ),
       ],
     );
+
     rightButtons = Opacity(
       opacity: 0.8,
       child: Container(
@@ -45,6 +51,7 @@ class _CameraPageState extends State<CameraPage> {
         ),
       ),
     );
+
     Widget selectMusic = Container(
       padding: EdgeInsets.only(left: 20, top: 20),
       alignment: Alignment.topCenter,
@@ -65,7 +72,7 @@ class _CameraPageState extends State<CameraPage> {
               Icons.music_note,
             ),
             Text(
-              '选择音乐',
+              'AAAA',
               style: StandardTextStyle.normal,
             ),
             Container(width: 32, height: 12),
@@ -95,7 +102,7 @@ class _CameraPageState extends State<CameraPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _SidePhotoButton(title: '道具'),
+            _SidePhotoButton(title: 'AA'),
             Expanded(
               child: Center(
                 child: Container(
@@ -113,16 +120,24 @@ class _CameraPageState extends State<CameraPage> {
                 ),
               ),
             ),
-            _SidePhotoButton(title: '上传'),
+            _SidePhotoButton(
+              title: 'อัพโหลด',
+              tapFunc: () {
+                print('You tap');
+                AppService().processUploadVideoFromGallery();
+              },
+            ),
           ],
         ),
       ),
     );
+
     var body = Stack(
       fit: StackFit.expand,
       children: <Widget>[
         cameraButton,
-        closeButton,
+        // closeButton,
+
         selectMusic,
         rightButtons,
       ],
@@ -132,6 +147,7 @@ class _CameraPageState extends State<CameraPage> {
       // backgroundColor: Color(0xFFf5f5f4),
       body: SafeArea(
         child: body,
+        // child: WidgetText(data: 'data'),
       ),
     );
   }
@@ -139,35 +155,40 @@ class _CameraPageState extends State<CameraPage> {
 
 class _SidePhotoButton extends StatelessWidget {
   final String? title;
+  final Function()? tapFunc;
   const _SidePhotoButton({
     Key? key,
     this.title,
+    this.tapFunc,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.only(top: 20),
-          height: 32,
-          width: 32,
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              style: BorderStyle.solid,
-              color: Colors.white.withOpacity(0.4),
-              width: 2,
+    return InkWell(
+      onTap: tapFunc,
+      child: Column(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(top: 20),
+            height: 32,
+            width: 32,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                style: BorderStyle.solid,
+                color: Colors.white.withOpacity(0.4),
+                width: 2,
+              ),
             ),
           ),
-        ),
-        Container(height: 2),
-        Text(
-          title!,
-          style: StandardTextStyle.smallWithOpacity,
-        )
-      ],
+          Container(height: 2),
+          Text(
+            title!,
+            style: StandardTextStyle.smallWithOpacity,
+          )
+        ],
+      ),
     );
   }
 }

@@ -61,6 +61,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   void initState() {
     AppService().findCurrentUserModel();
 
+    homePageLoadVideo();
+
+    super.initState();
+  }
+
+  void homePageLoadVideo() {
     AppService().readAllVideo().then((value) {
       // videoDataList = UserVideo.fetchVideo();
       videoDataList = appController.videoModels;
@@ -99,8 +105,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         },
       );
     });
-
-    super.initState();
   }
 
   @override
@@ -149,12 +153,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         if (appController.currentUserModels.isEmpty) {
           Get.to(const Authen());
         } else {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              fullscreenDialog: true,
-              builder: (context) => CameraPage(),
-            ),
-          );
+          // Navigator.of(context).push(
+          //   MaterialPageRoute(
+          //     fullscreenDialog: true,
+          //     builder: (context) => CameraPage(),
+          //   ),
+          // );
+
+          Get.to(CameraPage())!.then((value) => homePageLoadVideo());
         }
       },
     );

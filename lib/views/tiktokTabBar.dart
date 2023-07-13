@@ -1,7 +1,8 @@
-
+import 'package:flutter_tiktok/pages/cameraPage.dart';
 import 'package:flutter_tiktok/style/style.dart';
 import 'package:flutter_tiktok/views/selectText.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 enum TikTokPageTag {
   home,
@@ -54,7 +55,10 @@ class TikTokTabBar extends StatelessWidget {
               Icons.add_box,
               size: 32,
             ),
-            onTap: () => onAddButton?.call(),
+            onTap: () {
+              onAddButton?.call();
+              // Get.to(CameraPage());
+            },
           ),
         ),
         Expanded(
