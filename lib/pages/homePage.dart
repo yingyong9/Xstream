@@ -149,12 +149,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         if (appController.currentUserModels.isEmpty) {
           Get.to(const Authen());
         } else {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              fullscreenDialog: true,
-              builder: (context) => CameraPage(),
-            ),
-          );
+          // Navigator.of(context).push(
+          //   MaterialPageRoute(
+          //     fullscreenDialog: true,
+          //     builder: (context) => CameraPage(),
+          //   ),
+          // );
+
+          Get.to( CameraPage());
         }
       },
     );
