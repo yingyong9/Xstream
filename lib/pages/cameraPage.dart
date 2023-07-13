@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_tiktok/utility/app_service.dart';
 import 'package:flutter_tiktok/views/widget_back_button.dart';
 import 'package:flutter_tiktok/views/widget_text.dart';
 import 'package:tapped/tapped.dart';
@@ -13,10 +14,8 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
-
   @override
   Widget build(BuildContext context) {
-
     Widget rightButtons = Column(
       children: <Widget>[
         _CameraIconButton(
@@ -125,6 +124,7 @@ class _CameraPageState extends State<CameraPage> {
               title: 'อัพโหลด',
               tapFunc: () {
                 print('You tap');
+                AppService().processUploadVideoFromGallery();
               },
             ),
           ],
@@ -137,7 +137,7 @@ class _CameraPageState extends State<CameraPage> {
       children: <Widget>[
         cameraButton,
         // closeButton,
-        
+
         selectMusic,
         rightButtons,
       ],

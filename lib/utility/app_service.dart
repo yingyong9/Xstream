@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +12,9 @@ import 'package:flutter_tiktok/pages/homePage.dart';
 import 'package:flutter_tiktok/utility/app_constant.dart';
 import 'package:flutter_tiktok/utility/app_controller.dart';
 import 'package:flutter_tiktok/utility/app_snackbar.dart';
+import 'package:ftpconnect/ftpconnect.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AppService {
   AppController appController = Get.put(AppController());
@@ -190,5 +195,35 @@ class AppService {
       AppSnackBar(title: 'Sign Out Success', message: 'Sign Out Success')
           .normalSnackBar();
     });
+  }
+
+  Future<void> processUploadVideoFromGallery() async {
+    var result = await ImagePicker().pickVideo(source: ImageSource.gallery);
+    if (result != null) {
+      File file = File(result.path);
+      String nameFile = 'xtream${Random().nextInt(1000000)}.mp4';
+
+      FTPConnect ftpConnect = FTPConnect(AppConstant.host,
+          user: AppConstant.user, pass: AppConstant.pass);
+      await ftpConnect.connect();
+      bool response =
+          await ftpConnect.uploadFileWithRetry(file, pRemoteName: nameFile);
+      await ftpConnect.disconnect();
+      print('response upload ---> $response');
+      if (response) {
+        VideoModel videoModel = VideoModel(
+            url:
+                'https://stream115.otaro.co.th:443/vod/mp4:$nameFile/playlist.m3u8',
+            image: nameFile,
+            timestamp: Timestamp.fromDate(DateTime.now()));
+        FirebaseFirestore.instance
+            .collection('video')
+            .doc()
+            .set(videoModel.toMap())
+            .then((value) {
+          print('Insert Data Video Success');
+        });
+      }
+    }
   }
 }
