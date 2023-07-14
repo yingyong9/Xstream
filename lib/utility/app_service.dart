@@ -167,7 +167,11 @@ class AppService {
       appController.videoModels.clear();
     }
 
-    await FirebaseFirestore.instance.collection('video').get().then((value) {
+    await FirebaseFirestore.instance
+        .collection('video')
+        .orderBy('timestamp', descending: true)
+        .get()
+        .then((value) {
       for (var element in value.docs) {
         VideoModel videoModel = VideoModel.fromMap(element.data());
         appController.videoModels.add(videoModel);
@@ -216,11 +220,14 @@ class AppService {
       print('response upload ---> $response');
       if (response) {
         VideoModel videoModel = VideoModel(
-            url:
-                'https://stream115.otaro.co.th:443/vod/mp4:$nameFile/playlist.m3u8',
-            image: '',
-            desc: nameFile,
-            timestamp: Timestamp.fromDate(DateTime.now()));
+          url:
+              'https://stream115.otaro.co.th:443/vod/mp4:$nameFile/playlist.m3u8',
+          image: '',
+          desc: nameFile,
+          timestamp: Timestamp.fromDate(
+            DateTime.now(),
+          ),
+        );
         FirebaseFirestore.instance
             .collection('video')
             .doc()

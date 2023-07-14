@@ -1,8 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_tiktok/utility/app_controller.dart';
 import 'package:flutter_tiktok/utility/app_service.dart';
 import 'package:flutter_tiktok/views/widget_back_button.dart';
 import 'package:flutter_tiktok/views/widget_text.dart';
+import 'package:get/get.dart';
 import 'package:tapped/tapped.dart';
 
 import 'package:flutter_tiktok/style/style.dart';
@@ -14,6 +16,15 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
+  AppController appController = Get.put(AppController());
+
+  @override
+  void initState() {
+    super.initState();
+    print(
+        'currentUserModel ---> ${appController.currentUserModels.last.toMap()}');
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget rightButtons = Column(
