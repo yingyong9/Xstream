@@ -7,14 +7,14 @@ class VideoModel {
   final String url;
   final String image;
   final String? desc;
-  final String? uidOwner;
-  final Timestamp? timestamp;
+  final Timestamp timestamp;
+  final Map<String, dynamic> mapUserModel;
   VideoModel({
     required this.url,
     required this.image,
     this.desc,
-    this.uidOwner,
-     this.timestamp,
+    required this.timestamp,
+    required this.mapUserModel,
   });
 
   Map<String, dynamic> toMap() {
@@ -22,8 +22,8 @@ class VideoModel {
       'url': url,
       'image': image,
       'desc': desc,
-      'uidOwner': uidOwner,
       'timestamp': timestamp,
+      'mapUserModel': mapUserModel,
     };
   }
 
@@ -31,9 +31,9 @@ class VideoModel {
     return VideoModel(
       url: (map['url'] ?? '') as String,
       image: (map['image'] ?? '') as String,
-      desc: map['desc'] != null ? map['desc'] as String : null,
-      uidOwner: map['uidOwner'] != null ? map['uidOwner'] as String : null,
-      timestamp: (map['timestamp'] ?? Timestamp(0, 0)),
+      desc: map['desc'] ?? '',
+      timestamp: map['timestamp'] ?? Timestamp(0, 0),
+      mapUserModel: Map<String, dynamic>.from(map['mapUserModel'] ?? {}),
     );
   }
 

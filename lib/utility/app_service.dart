@@ -226,7 +226,7 @@ class AppService {
           desc: nameFile,
           timestamp: Timestamp.fromDate(
             DateTime.now(),
-          ),
+          ), mapUserModel: appController.currentUserModels.last.toMap(),
         );
         FirebaseFirestore.instance
             .collection('video')
