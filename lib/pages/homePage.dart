@@ -68,7 +68,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   void homePageLoadVideo() {
     AppService().readAllVideo().then((value) {
-     
       videoDataList = appController.videoModels;
       WidgetsBinding.instance.addObserver(this);
       _videoListController.init(
@@ -153,13 +152,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         if (appController.currentUserModels.isEmpty) {
           Get.to(const Authen());
         } else {
-          // Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     fullscreenDialog: true,
-          //     builder: (context) => CameraPage(),
-          //   ),
-          // );
-
           Get.to(CameraPage())!.then((value) => homePageLoadVideo());
         }
       },
@@ -184,7 +176,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           )
         : Container();
 
-    // 组合
     return TikTokScaffold(
       controller: tkController,
       hasBottomPadding: hasBackground,
@@ -246,6 +237,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 userInfoWidget: VideoUserInfo(
                   desc: data.desc,
                   bottomPadding: hasBottomPadding ? 16.0 : 50.0,
+                  videoModel: i < appController.videoModels.length ? appController.videoModels[i] : appController.videoModels.last,
                 ),
                 onSingleTap: () async {
                   if (player.controller.value.isPlaying) {

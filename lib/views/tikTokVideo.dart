@@ -1,7 +1,10 @@
-import 'package:flutter_tiktok/style/style.dart';
-import 'package:flutter_tiktok/views/tikTokVideoGesture.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import 'package:flutter_tiktok/models/video_model.dart';
+import 'package:flutter_tiktok/style/style.dart';
+import 'package:flutter_tiktok/views/tikTokVideoGesture.dart';
 
 ///
 /// TikTok风格的一个视频页组件，覆盖在video上，提供以下功能：
@@ -39,16 +42,13 @@ class TikTokVideoPage extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    // 右边的按钮列表
     Widget rightButtons = rightButtonColumn ?? Container();
-    // 用户信息
+
     Widget userInfo = userInfoWidget ??
         VideoUserInfo(
           bottomPadding: bottomPadding,
         );
-    // 视频加载的动画
-    // Widget videoLoading = VideoLoadingPlaceHolder(tag: tag);
-    // 视频播放页
+
     Widget videoContainer = Stack(
       children: <Widget>[
         Container(
@@ -151,12 +151,13 @@ class VideoLoadingPlaceHolder extends StatelessWidget {
 
 class VideoUserInfo extends StatelessWidget {
   final String? desc;
-  // final Function onGoodGift;
+  final VideoModel? videoModel;
+
   const VideoUserInfo({
     Key? key,
-    required this.bottomPadding,
-    // @required this.onGoodGift,
     this.desc,
+    this.videoModel,
+    required this.bottomPadding,
   }) : super(key: key);
 
   final double bottomPadding;
@@ -174,12 +175,12 @@ class VideoUserInfo extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            '@朱二旦的枯燥生活',
+            videoModel == null ? '' : '@${videoModel!.mapUserModel["name"]}',
             style: StandardTextStyle.big,
           ),
           Container(height: 6),
           Text(
-            desc ?? '#原创 有钱人的生活就是这么朴实无华，且枯燥 #短视频',
+            desc ?? '',
             style: StandardTextStyle.normal,
           ),
           Container(height: 6),
@@ -188,7 +189,7 @@ class VideoUserInfo extends StatelessWidget {
               Icon(Icons.music_note, size: 14),
               Expanded(
                 child: Text(
-                  '朱二旦的枯燥生活创作的原声',
+                  'คำอธิบาย ???',
                   maxLines: 9,
                   style: StandardTextStyle.normal,
                 ),
