@@ -4,10 +4,12 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tiktok/models/otp_require_thaibulk.dart';
 import 'package:flutter_tiktok/models/user_model.dart';
 import 'package:flutter_tiktok/models/video_model.dart';
+import 'package:flutter_tiktok/pages/display_thumbnail.dart';
 import 'package:flutter_tiktok/pages/homePage.dart';
 import 'package:flutter_tiktok/utility/app_constant.dart';
 import 'package:flutter_tiktok/utility/app_controller.dart';
@@ -15,9 +17,20 @@ import 'package:flutter_tiktok/utility/app_snackbar.dart';
 import 'package:ftpconnect/ftpconnect.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 class AppService {
   AppController appController = Get.put(AppController());
+
+  Future<String?> processUploadThumbnailVideo(
+      {required File fileThumbnail, required String nameFile}) async {
+    String? urlThumbnail;
+
+    FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+    Reference reference = firebaseStorage.ref().child('thumbnail/$nameFile');
+
+    return urlThumbnail;
+  }
 
   Future<void> verifyOTPThaibulk(
       {required String token,
@@ -211,33 +224,45 @@ class AppService {
       File file = File(result.path);
       String nameFile = 'xtream${Random().nextInt(1000000)}.mp4';
 
-      FTPConnect ftpConnect = FTPConnect(AppConstant.host,
-          user: AppConstant.user, pass: AppConstant.pass);
-      await ftpConnect.connect();
-      bool response =
-          await ftpConnect.uploadFileWithRetry(file, pRemoteName: nameFile);
-      await ftpConnect.disconnect();
-      print('response upload ---> $response');
-      if (response) {
-        VideoModel videoModel = VideoModel(
-          url:
-              'https://stream115.otaro.co.th:443/vod/mp4:$nameFile/playlist.m3u8',
-          image: '',
-          desc: nameFile,
-          timestamp: Timestamp.fromDate(
-            DateTime.now(),
-          ), mapUserModel: appController.currentUserModels.last.toMap(),
-        );
-        FirebaseFirestore.instance
-            .collection('video')
-            .doc()
-            .set(videoModel.toMap())
-            .then((value) {
-          print('Insert Data Video Success');
-          AppSnackBar(title: 'Upload Video Success', message: 'Thankyou')
-              .normalSnackBar();
-        });
-      }
+      print('nameFile ----> $nameFile');
+
+      final pathThumbnailFile =
+          await VideoThumbnail.thumbnailFile(video: file.path);
+
+      File thumbnailFile = File(pathThumbnailFile.toString());
+
+      Get.to(DisplayThumbnail(
+        fileThumbnail: thumbnailFile,
+        fileVideo: file,
+      ));
+
+      // FTPConnect ftpConnect = FTPConnect(AppConstant.host,
+      //     user: AppConstant.user, pass: AppConstant.pass);
+      // await ftpConnect.connect();
+      // bool response =
+      //     await ftpConnect.uploadFileWithRetry(file, pRemoteName: nameFile);
+      // await ftpConnect.disconnect();
+      // print('response upload ---> $response');
+      // if (response) {
+      //   VideoModel videoModel = VideoModel(
+      //     url:
+      //         'https://stream115.otaro.co.th:443/vod/mp4:$nameFile/playlist.m3u8',
+      //     image: '',
+      //     desc: nameFile,
+      //     timestamp: Timestamp.fromDate(
+      //       DateTime.now(),
+      //     ), mapUserModel: appController.currentUserModels.last.toMap(),
+      //   );
+      //   FirebaseFirestore.instance
+      //       .collection('video')
+      //       .doc()
+      //       .set(videoModel.toMap())
+      //       .then((value) {
+      //     print('Insert Data Video Success');
+      //     AppSnackBar(title: 'Upload Video Success', message: 'Thankyou')
+      //         .normalSnackBar();
+      //   });
+      // }
     }
   }
 }

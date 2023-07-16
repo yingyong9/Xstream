@@ -37,6 +37,8 @@ dependencies:
   flutter_pin_code_widget: ^0.1.0
   ftpconnect: ^2.0.5
   image_picker: ^1.0.1
+  video_thumbnail: ^0.5.3
+  chewie: ^1.7.0
 
 dev_dependencies:
   flutter_test:

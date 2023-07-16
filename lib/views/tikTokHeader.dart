@@ -18,7 +18,7 @@ class _TikTokHeaderState extends State<TikTokHeader> {
   int currentSelect = 0;
   @override
   Widget build(BuildContext context) {
-    List<String> list = ['推荐', '本地'];
+    List<String> list = ['Live', 'ForYou'];
     List<Widget> headList = [];
     for (var i = 0; i < list.length; i++) {
       headList.add(Expanded(

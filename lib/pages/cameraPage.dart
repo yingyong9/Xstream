@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tiktok/utility/app_controller.dart';
 import 'package:flutter_tiktok/utility/app_service.dart';
-import 'package:flutter_tiktok/views/widget_back_button.dart';
-import 'package:flutter_tiktok/views/widget_text.dart';
 import 'package:get/get.dart';
 import 'package:tapped/tapped.dart';
 
