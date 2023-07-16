@@ -3,27 +3,31 @@ import 'dart:io';
 
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tiktok/utility/app_service.dart';
-
-import 'package:flutter_tiktok/views/widget_button.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
-class DisplayThumbnail extends StatefulWidget {
-  const DisplayThumbnail({
+import 'package:flutter_tiktok/pages/detail_post.dart';
+import 'package:flutter_tiktok/views/widget_button.dart';
+
+class CheckVideoUpload extends StatefulWidget {
+  const CheckVideoUpload({
     Key? key,
     required this.fileThumbnail,
     required this.fileVideo,
+    required this.nameFileVideo,
+    required this.nameFileImage,
   }) : super(key: key);
 
   final File fileThumbnail;
   final File fileVideo;
+  final String nameFileVideo;
+  final String nameFileImage;
 
   @override
-  State<DisplayThumbnail> createState() => _DisplayThumbnailState();
+  State<CheckVideoUpload> createState() => _CheckVideoUploadState();
 }
 
-class _DisplayThumbnailState extends State<DisplayThumbnail> {
+class _CheckVideoUploadState extends State<CheckVideoUpload> {
   VideoPlayerController? videoPlayerController;
   ChewieController? chewieController;
 
@@ -88,7 +92,12 @@ class _DisplayThumbnailState extends State<DisplayThumbnail> {
               // label: 'โฟสต์',
               label: 'ต่อไป',
               pressFunc: () {
-               
+                Get.offAll(DetailPost(
+                  fileThumbnail: widget.fileThumbnail,
+                  fileVideo: widget.fileVideo,
+                  nameFileImage: widget.nameFileImage,
+                  nameFileVideo: widget.nameFileVideo,
+                ));
               },
             ),
           ),

@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tiktok/models/otp_require_thaibulk.dart';
 import 'package:flutter_tiktok/models/user_model.dart';
 import 'package:flutter_tiktok/models/video_model.dart';
-import 'package:flutter_tiktok/pages/display_thumbnail.dart';
+import 'package:flutter_tiktok/pages/check_video_upload.dart';
 import 'package:flutter_tiktok/pages/homePage.dart';
 import 'package:flutter_tiktok/utility/app_constant.dart';
 import 'package:flutter_tiktok/utility/app_controller.dart';
@@ -22,12 +22,53 @@ import 'package:video_thumbnail/video_thumbnail.dart';
 class AppService {
   AppController appController = Get.put(AppController());
 
+  Future<void> processFtpUploadAndInsertDataVideo(
+      {required File fileVideo,
+      required String nameFileVideo,
+      required String urlThumbnail,
+      required String detail}) async {
+    FTPConnect ftpConnect = FTPConnect(AppConstant.host,
+        user: AppConstant.user, pass: AppConstant.pass);
+    await ftpConnect.connect();
+    bool response = await ftpConnect.uploadFileWithRetry(fileVideo,
+        pRemoteName: nameFileVideo);
+    await ftpConnect.disconnect();
+    print('response upload ---> $response');
+    if (response) {
+      VideoModel videoModel = VideoModel(
+        url:
+            'https://stream115.otaro.co.th:443/vod/mp4:$nameFileVideo/playlist.m3u8',
+        image: urlThumbnail,
+        desc: nameFileVideo,
+        detail: detail,
+        timestamp: Timestamp.fromDate(
+          DateTime.now(),
+        ),
+        mapUserModel: appController.currentUserModels.last.toMap(),
+      );
+      FirebaseFirestore.instance
+          .collection('video')
+          .doc()
+          .set(videoModel.toMap())
+          .then((value) {
+        print('Insert Data Video Success');
+        Get.offAll(HomePage());
+        AppSnackBar(title: 'Upload Video Success', message: 'Thankyou')
+            .normalSnackBar();
+      });
+    }
+  }
+
   Future<String?> processUploadThumbnailVideo(
       {required File fileThumbnail, required String nameFile}) async {
     String? urlThumbnail;
 
     FirebaseStorage firebaseStorage = FirebaseStorage.instance;
     Reference reference = firebaseStorage.ref().child('thumbnail/$nameFile');
+    UploadTask uploadTask = reference.putFile(fileThumbnail);
+    await uploadTask.whenComplete(() async {
+      urlThumbnail = await reference.getDownloadURL();
+    });
 
     return urlThumbnail;
   }
@@ -222,18 +263,21 @@ class AppService {
     var result = await ImagePicker().pickVideo(source: ImageSource.gallery);
     if (result != null) {
       File file = File(result.path);
-      String nameFile = 'xtream${Random().nextInt(1000000)}.mp4';
 
-      print('nameFile ----> $nameFile');
+      int i = Random().nextInt(1000000);
+      String nameFileVideo = 'xtream$i.mp4';
+      String nameFileImage = 'xtream$i.jpg';
 
       final pathThumbnailFile =
           await VideoThumbnail.thumbnailFile(video: file.path);
 
       File thumbnailFile = File(pathThumbnailFile.toString());
 
-      Get.to(DisplayThumbnail(
+      Get.to(CheckVideoUpload(
         fileThumbnail: thumbnailFile,
         fileVideo: file,
+        nameFileImage: nameFileImage,
+        nameFileVideo: nameFileVideo,
       ));
 
       // FTPConnect ftpConnect = FTPConnect(AppConstant.host,
