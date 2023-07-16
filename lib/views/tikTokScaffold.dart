@@ -145,7 +145,7 @@ class _TikTokScaffoldState extends State<TikTokScaffold>
         ),
       ],
     );
-    // 增加手势控制
+    
     body = GestureDetector(
       onVerticalDragUpdate: calculateOffsetY,
       onVerticalDragEnd: (_) async {
@@ -161,7 +161,7 @@ class _TikTokScaffoldState extends State<TikTokScaffold>
         details,
         screenWidth,
       ),
-      // 水平方向滑动开始
+     
       onHorizontalDragStart: (_) {
         if (!widget.enableGesture!) return;
         animationControllerX?.stop();
@@ -191,10 +191,10 @@ class _TikTokScaffoldState extends State<TikTokScaffold>
     return body;
   }
 
-  // 水平方向滑动中
+ 
   void onHorizontalDragUpdate(details, screenWidth) {
     if (!widget.enableGesture!) return;
-    // 控制 offsetX 的值在 -screenWidth 到 screenWidth 之间
+   
     if (offsetX + details.delta.dx >= screenWidth) {
       setState(() {
         offsetX = screenWidth;
@@ -210,39 +210,38 @@ class _TikTokScaffoldState extends State<TikTokScaffold>
     }
   }
 
-  // 水平方向滑动结束
+  
   onHorizontalDragEnd(details, screenWidth) {
     if (!widget.enableGesture!) return;
     print('velocity:${details.velocity}');
     var vOffset = details.velocity.pixelsPerSecond.dx;
 
-    // 速度很快时
+   
     if (vOffset > scrollSpeed && inMiddle == 0) {
-      // 去右边页面
+      
       return animateToPage(TikTokPagePositon.left);
     } else if (vOffset < -scrollSpeed && inMiddle == 0) {
-      // 去左边页面
+    
       return animateToPage(TikTokPagePositon.right);
     } else if (inMiddle > 0 && vOffset < -scrollSpeed) {
       return animateToPage(TikTokPagePositon.middle);
     } else if (inMiddle < 0 && vOffset > scrollSpeed) {
       return animateToPage(TikTokPagePositon.middle);
     }
-    // 当滑动停止的时候 根据 offsetX 的偏移量进行动画
+   
     if (offsetX.abs() < screenWidth * 0.5) {
-      // 中间页面
+     
       return animateToPage(TikTokPagePositon.middle);
     } else if (offsetX > 0) {
-      // 去左边页面
+     
       return animateToPage(TikTokPagePositon.left);
     } else {
-      // 去右边页面
+      
       return animateToPage(TikTokPagePositon.right);
     }
   }
 
-  /// 滑动到顶部
-  ///
+  
   /// [offsetY] to 0.0
   Future animateToTop() {
     animationControllerY = AnimationController(
@@ -285,7 +284,7 @@ class _TikTokScaffoldState extends State<TikTokScaffold>
   /// 计算[offsetY]
   ///
   /// 手指上滑,[absorbing]为false，不阻止事件，事件交给底层PageView处理
-  /// 处于第一页且是下拉，则拦截滑动���件
+  
   void calculateOffsetY(DragUpdateDetails details) {
     if (!widget.enableGesture!) return;
     if (inMiddle != 0) {

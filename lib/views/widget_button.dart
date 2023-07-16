@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:flutter_tiktok/style/style.dart';
 import 'package:flutter_tiktok/views/widget_text.dart';
 
@@ -8,10 +9,12 @@ class WidgetButton extends StatelessWidget {
     Key? key,
     required this.label,
     required this.pressFunc,
+    this.color,
   }) : super(key: key);
 
   final String label;
   final Function() pressFunc;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,7 @@ class WidgetButton extends StatelessWidget {
       onPressed: pressFunc,
       child: WidgetText(data: label),
       style: ElevatedButton.styleFrom(
-        backgroundColor: ColorPlate.darkGray,
+        backgroundColor: color ?? ColorPlate.darkGray,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
