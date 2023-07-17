@@ -261,59 +261,31 @@ class AppService {
   }
 
   Future<void> processUploadVideoFromGallery() async {
-    var result = await ImagePicker().pickVideo(source: ImageSource.gallery);
-    if (result != null) {
-      File file = File(result.path);
+    try {
+      var result = await ImagePicker().pickVideo(source: ImageSource.gallery);
+      if (result != null) {
+        File file = File(result.path);
 
-      int i = Random().nextInt(1000000);
-      String nameFileVideo = 'xtream$i.mp4';
-      String nameFileImage = 'xtream$i.jpg';
+        int i = Random().nextInt(1000000);
+        String nameFileVideo = 'xtream$i.mp4';
+        String nameFileImage = 'xtream$i.jpg';
 
-      final pathThumbnailFile =
-          await VideoThumbnail.thumbnailFile(video: file.path);
+        final pathThumbnailFile =
+            await VideoThumbnail.thumbnailFile(video: file.path);
 
-      File thumbnailFile = File(pathThumbnailFile.toString());
+        File thumbnailFile = File(pathThumbnailFile.toString());
 
-      Get.offAll(DetailPost(
-          fileThumbnail: thumbnailFile,
-          fileVideo: file,
-          nameFileVideo: nameFileVideo,
-          nameFileImage: nameFileImage));
-
-      // Get.to(CheckVideoUpload(
-      //   fileThumbnail: thumbnailFile,
-      //   fileVideo: file,
-      //   nameFileImage: nameFileImage,
-      //   nameFileVideo: nameFileVideo,
-      // ));
-
-      // FTPConnect ftpConnect = FTPConnect(AppConstant.host,
-      //     user: AppConstant.user, pass: AppConstant.pass);
-      // await ftpConnect.connect();
-      // bool response =
-      //     await ftpConnect.uploadFileWithRetry(file, pRemoteName: nameFile);
-      // await ftpConnect.disconnect();
-      // print('response upload ---> $response');
-      // if (response) {
-      //   VideoModel videoModel = VideoModel(
-      //     url:
-      //         'https://stream115.otaro.co.th:443/vod/mp4:$nameFile/playlist.m3u8',
-      //     image: '',
-      //     desc: nameFile,
-      //     timestamp: Timestamp.fromDate(
-      //       DateTime.now(),
-      //     ), mapUserModel: appController.currentUserModels.last.toMap(),
-      //   );
-      //   FirebaseFirestore.instance
-      //       .collection('video')
-      //       .doc()
-      //       .set(videoModel.toMap())
-      //       .then((value) {
-      //     print('Insert Data Video Success');
-      //     AppSnackBar(title: 'Upload Video Success', message: 'Thankyou')
-      //         .normalSnackBar();
-      //   });
-      // }
+        Get.offAll(DetailPost(
+            fileThumbnail: thumbnailFile,
+            fileVideo: file,
+            nameFileVideo: nameFileVideo,
+            nameFileImage: nameFileImage));
+      }
+    } on Exception catch (e) {
+      AppSnackBar(
+              title: 'เปลี่ยนวีดีโอ',
+              message: 'ขออภัยด้วยไม่สามารถใช้ วีดีโอนี่ได้')
+          .errorSnackBar();
     }
   }
 }

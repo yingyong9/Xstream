@@ -48,9 +48,7 @@ class UserMsgRow extends StatelessWidget {
         width: 40,
         child: lead ??
             ClipOval(
-              child: Image.network(
-                "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",fit: BoxFit.cover,
-              ),
+              child: Image.asset('images/logo3.png', fit: BoxFit.cover,),
             ),
       ),
     );

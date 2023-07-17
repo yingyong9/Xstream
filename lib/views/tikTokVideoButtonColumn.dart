@@ -104,13 +104,10 @@ class TikTokAvatar extends StatelessWidget {
           width: 1,
         ),
         borderRadius: BorderRadius.circular(SysSize.avatar / 2.0),
-        color: Colors.orange,
+        color: Colors.black,
       ),
       child: ClipOval(
-        child: Image.network(
-          "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
-          fit: BoxFit.cover,
-        ),
+       child: Image.asset('images/logo3.png', fit: BoxFit.cover,),
       ),
     );
     Widget addButton = Container(
@@ -118,7 +115,7 @@ class TikTokAvatar extends StatelessWidget {
       height: 20,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: ColorPlate.orange,
+        color: ColorPlate.red,
       ),
       child: Icon(
         Icons.add,
