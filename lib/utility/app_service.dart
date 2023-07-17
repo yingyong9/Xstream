@@ -10,6 +10,7 @@ import 'package:flutter_tiktok/models/otp_require_thaibulk.dart';
 import 'package:flutter_tiktok/models/user_model.dart';
 import 'package:flutter_tiktok/models/video_model.dart';
 import 'package:flutter_tiktok/pages/check_video_upload.dart';
+import 'package:flutter_tiktok/pages/detail_post.dart';
 import 'package:flutter_tiktok/pages/homePage.dart';
 import 'package:flutter_tiktok/utility/app_constant.dart';
 import 'package:flutter_tiktok/utility/app_controller.dart';
@@ -273,12 +274,18 @@ class AppService {
 
       File thumbnailFile = File(pathThumbnailFile.toString());
 
-      Get.to(CheckVideoUpload(
-        fileThumbnail: thumbnailFile,
-        fileVideo: file,
-        nameFileImage: nameFileImage,
-        nameFileVideo: nameFileVideo,
-      ));
+      Get.offAll(DetailPost(
+          fileThumbnail: thumbnailFile,
+          fileVideo: file,
+          nameFileVideo: nameFileVideo,
+          nameFileImage: nameFileImage));
+
+      // Get.to(CheckVideoUpload(
+      //   fileThumbnail: thumbnailFile,
+      //   fileVideo: file,
+      //   nameFileImage: nameFileImage,
+      //   nameFileVideo: nameFileVideo,
+      // ));
 
       // FTPConnect ftpConnect = FTPConnect(AppConstant.host,
       //     user: AppConstant.user, pass: AppConstant.pass);
