@@ -53,15 +53,15 @@ class _UserPageState extends State<UserPage> {
           margin: EdgeInsets.only(bottom: 12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(44),
-            color: Colors.orange,
+            color: Colors.black,
             border: Border.all(
               color: Colors.white,
               width: 1,
             ),
           ),
           child: ClipOval(
-            child: Image.network(
-              "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
+            child: Image.asset(
+              'images/logo3.png',
               fit: BoxFit.cover,
             ),
           ),

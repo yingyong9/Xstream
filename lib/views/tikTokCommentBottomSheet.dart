@@ -103,8 +103,8 @@ class _CommentRow extends StatelessWidget {
         height: 36,
         width: 36,
         child: ClipOval(
-          child: Image.network(
-            "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
+          child: Image.asset(
+            'images/logo3.png',
             fit: BoxFit.cover,
           ),
         ),
