@@ -152,7 +152,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         if (appController.currentUserModels.isEmpty) {
           Get.to(const Authen());
         } else {
-          Get.to(CameraPage())!.then((value) => homePageLoadVideo());
+          // Get.to(CameraPage())!.then((value) => homePageLoadVideo());
+          AppService().processUploadVideoFromGallery();
         }
       },
     );
