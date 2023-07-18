@@ -1,7 +1,9 @@
 import 'package:flutter_tiktok/pages/userDetailPage.dart';
 import 'package:flutter_tiktok/style/style.dart';
+import 'package:flutter_tiktok/utility/app_controller.dart';
 import 'package:flutter_tiktok/views/topToolRow.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tapped/tapped.dart';
 
 class UserPage extends StatefulWidget {
@@ -23,6 +25,9 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
+  
+  AppController appController = Get.put(AppController());
+
   @override
   Widget build(BuildContext context) {
     Widget likeButton = Container(
