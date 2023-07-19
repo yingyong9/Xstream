@@ -1,7 +1,5 @@
-import 'package:flutter_tiktok/mock/video.dart';
 import 'package:flutter_tiktok/models/video_model.dart';
 import 'package:flutter_tiktok/pages/authen.dart';
-import 'package:flutter_tiktok/pages/cameraPage.dart';
 import 'package:flutter_tiktok/pages/followPage.dart';
 import 'package:flutter_tiktok/pages/searchPage.dart';
 import 'package:flutter_tiktok/pages/userPage.dart';
