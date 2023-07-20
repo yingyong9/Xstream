@@ -2,7 +2,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_tiktok/utility/app_controller.dart';
 import 'package:flutter_tiktok/utility/app_service.dart';
+import 'package:flutter_tiktok/utility/app_snackbar.dart';
+import 'package:flutter_tiktok/views/widget_form.dart';
+import 'package:flutter_tiktok/views/widget_text.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter_tiktok/pages/homePage.dart';
@@ -32,6 +36,12 @@ class DetailPost extends StatefulWidget {
 
 class _DetailPostState extends State<DetailPost> {
   TextEditingController detailController = TextEditingController();
+  AppController appController = Get.put(AppController());
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController stockController = TextEditingController();
+  TextEditingController affiliateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -80,10 +90,75 @@ class _DetailPostState extends State<DetailPost> {
                     children: [
                       WidgetButton(
                         label: 'สร้างสินค้า',
+                        pressFunc: () {
+                          AppService().processTakePhoto();
+                        },
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      WidgetButton(
+                        label: 'สินค้าของฉัน',
                         pressFunc: () {},
                       ),
                     ],
-                  )
+                  ),
+                  Obx(() {
+                    return appController.files.isEmpty
+                        ? const SizedBox()
+                        : Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: boxConstraints.maxWidth * 0.65,
+                                child: Column(
+                                  children: [
+                                    WidgetForm(
+                                      textEditingController: nameController,
+                                      labelWidget:
+                                          WidgetText(data: 'ชื่อสินค้า :'),
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    WidgetForm(
+                                      textEditingController: priceController,
+                                      labelWidget:
+                                          WidgetText(data: 'ราคาสินค้า :'),
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    WidgetForm(
+                                      textEditingController: stockController,
+                                      labelWidget:
+                                          WidgetText(data: 'จำนวนสินค้า :'),
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    WidgetForm(
+                                      textEditingController:
+                                          affiliateController,
+                                      labelWidget:
+                                          WidgetText(data: 'นายหน้า :'),
+                                    ),
+                                    const SizedBox(
+                                      height: 64,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: boxConstraints.maxWidth * 0.25,
+                                height: boxConstraints.maxWidth * 0.35,
+                                child: WidgetImageFile(
+                                    fileImage: appController.files.last),
+                              ),
+                            ],
+                          );
+                  })
                 ],
               ),
             ),
@@ -92,20 +167,55 @@ class _DetailPostState extends State<DetailPost> {
       ),
       bottomSheet: Container(
         decoration: BoxDecoration(color: ColorPlate.back1),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         width: double.infinity,
         child: WidgetButton(
           color: ColorPlate.red,
           label: 'โพสต์',
           pressFunc: () async {
-            String? urlImage = await AppService().processUploadThumbnailVideo(
-                fileThumbnail: widget.fileThumbnail,
-                nameFile: widget.nameFileImage);
-            print('urlImage ---> $urlImage');
-            AppService().processFtpUploadAndInsertDataVideo(
+            if (appController.files.isEmpty) {
+              // Video Only
+
+              String? urlImage = await AppService().processUploadThumbnailVideo(
+                  fileThumbnail: widget.fileThumbnail,
+                  nameFile: widget.nameFileImage);
+
+              AppService().processFtpUploadAndInsertDataVideo(
+                  fileVideo: widget.fileVideo,
+                  nameFileVideo: widget.nameFileVideo,
+                  urlThumbnail: urlImage!,
+                  detail: detailController.text);
+            } else {
+              // Have Product
+
+              if ((nameController.text.isEmpty) ||
+                  (priceController.text.isEmpty) ||
+                  (affiliateController.text.isEmpty)) {
+                AppSnackBar(
+                        title: 'มีช่องว่าง',
+                        message: 'ชื่อ, ราคา และ นายหน้าสินค้า ต้องมี')
+                    .errorSnackBar();
+              } else {}
+
+              String? urlImageProduct =
+                  await AppService().processUploadFile(path: 'product');
+
+              String? urlImage = await AppService().processUploadThumbnailVideo(
+                  fileThumbnail: widget.fileThumbnail,
+                  nameFile: widget.nameFileImage);
+
+              AppService().processFtpUploadAndInsertDataVideo(
                 fileVideo: widget.fileVideo,
                 nameFileVideo: widget.nameFileVideo,
                 urlThumbnail: urlImage!,
-                detail: detailController.text);
+                detail: detailController.text,
+                nameProduct: nameController.text,
+                priceProduct: priceController.text,
+                stockProduct: stockController.text,
+                affiliateProduct: affiliateController.text,
+                urlProduct: urlImageProduct,
+              );
+            }
           },
         ),
       ),

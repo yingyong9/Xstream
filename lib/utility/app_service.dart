@@ -34,11 +34,17 @@ class AppService {
     }
   }
 
-  Future<void> processFtpUploadAndInsertDataVideo(
-      {required File fileVideo,
-      required String nameFileVideo,
-      required String urlThumbnail,
-      required String detail}) async {
+  Future<void> processFtpUploadAndInsertDataVideo({
+    required File fileVideo,
+    required String nameFileVideo,
+    required String urlThumbnail,
+    required String detail,
+    String? nameProduct,
+    String? priceProduct,
+    String? stockProduct,
+    String? affiliateProduct,
+    String? urlProduct,
+  }) async {
     FTPConnect ftpConnect = FTPConnect(AppConstant.host,
         user: AppConstant.user, pass: AppConstant.pass);
     await ftpConnect.connect();
@@ -57,6 +63,11 @@ class AppService {
           DateTime.now(),
         ),
         mapUserModel: appController.currentUserModels.last.toMap(),
+        nameProduct: nameProduct ?? '',
+        priceProduct: priceProduct ?? '',
+        stockProduct: stockProduct ?? '',
+        affiliateProduct: affiliateProduct ?? '',
+        urlProduct: urlProduct ?? '',
       );
       FirebaseFirestore.instance
           .collection('video')
@@ -83,6 +94,20 @@ class AppService {
     });
 
     return urlThumbnail;
+  }
+
+  Future<String?> processUploadFile({required String path}) async {
+    String? urlImage;
+
+    FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+    Reference reference =
+        firebaseStorage.ref().child('$path/${appController.nameFiles.last}');
+    UploadTask uploadTask = reference.putFile(appController.files.last);
+    await uploadTask.whenComplete(() async {
+      urlImage = await reference.getDownloadURL();
+    });
+
+    return urlImage;
   }
 
   Future<void> verifyOTPThaibulk(

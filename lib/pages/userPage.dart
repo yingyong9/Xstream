@@ -88,7 +88,7 @@ class _UserPageState extends State<UserPage> {
       ),
     );
     Widget body = Obx(() {
-      return ListView(
+      return appController.currentUserModels.isEmpty ? const SizedBox() : ListView(
         physics: BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),

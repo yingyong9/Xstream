@@ -12,5 +12,8 @@ class AppController extends GetxController {
   RxList<File> files = <File>[].obs;
   RxList<String> nameFiles = <String>[].obs;
 
+  RxList<File> productFiles = <File>[].obs;
+  RxList<String> productNameFiles = <String>[].obs;
+
 
 }

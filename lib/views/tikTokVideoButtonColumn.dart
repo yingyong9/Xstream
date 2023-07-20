@@ -1,5 +1,8 @@
 import 'package:flutter_tiktok/style/style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tiktok/utility/app_constant.dart';
+import 'package:flutter_tiktok/views/widget_image_network.dart';
+import 'package:flutter_tiktok/views/widget_text.dart';
 import 'package:tapped/tapped.dart';
 
 class TikTokButtonColumn extends StatelessWidget {
@@ -22,9 +25,10 @@ class TikTokButtonColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: SysSize.avatar,
+      // color: Colors.red,
+      // width: SysSize.avatar,
       margin: EdgeInsets.only(
-        bottom: bottomPadding ?? 50,
+        bottom: bottomPadding ?? 0,
         right: 12,
       ),
       child: Column(
@@ -35,19 +39,31 @@ class TikTokButtonColumn extends StatelessWidget {
             child: TikTokAvatar(),
             onTap: onAvatar,
           ),
-          FavoriteIcon(
-            onFavorite: onFavorite,
-            isFavorite: isFavorite,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FavoriteIcon(
+                onFavorite: onFavorite,
+                isFavorite: isFavorite,
+              ),
+            ],
           ),
-          _IconButton(
-            icon: IconToText(Icons.mode_comment, size: SysSize.iconBig - 4),
-            text: '4213',
-            onTap: onComment,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _IconButton(
+                icon: IconToText(Icons.mode_comment, size: SysSize.iconBig - 4),
+                text: '4213',
+                onTap: onComment,
+              ),
+            ],
           ),
-          _IconButton(
-            icon: IconToText(Icons.share, size: SysSize.iconBig),
-            text: '346',
-            onTap: onShare,
+          Container(
+            margin: const EdgeInsets.only(right: 12),
+            width: 130,
+            height: 170,
+            child: WidgetImageNetwork(urlImage: AppConstant.urlAccount),
+            decoration: BoxDecoration(color: Colors.grey),
           ),
           Container(
             width: SysSize.avatar,
@@ -107,7 +123,10 @@ class TikTokAvatar extends StatelessWidget {
         color: Colors.black,
       ),
       child: ClipOval(
-       child: Image.asset('images/logo3.png', fit: BoxFit.cover,),
+        child: Image.asset(
+          'images/logo3.png',
+          fit: BoxFit.cover,
+        ),
       ),
     );
     Widget addButton = Container(

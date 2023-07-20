@@ -10,6 +10,15 @@ class VideoModel {
   final Timestamp timestamp;
   final Map<String, dynamic> mapUserModel;
   final String? detail;
+  final String? nameProduct;
+  final String? priceProduct;
+  final String? stockProduct;
+  final String? affiliateProduct;
+  final String? urlProduct;
+
+
+
+
   VideoModel({
     required this.url,
     required this.image,
@@ -17,6 +26,11 @@ class VideoModel {
     required this.timestamp,
     required this.mapUserModel,
     this.detail,
+    this.nameProduct,
+    this.priceProduct,
+    this.stockProduct,
+    this.affiliateProduct,
+    this.urlProduct,
   });
 
   Map<String, dynamic> toMap() {
@@ -27,6 +41,11 @@ class VideoModel {
       'timestamp': timestamp,
       'mapUserModel': mapUserModel,
       'detail': detail,
+      'nameProduct': nameProduct,
+      'priceProduct': priceProduct,
+      'stockProduct': stockProduct,
+      'affiliateProduct': affiliateProduct,
+      'urlProduct': urlProduct,
     };
   }
 
@@ -38,6 +57,11 @@ class VideoModel {
       timestamp: map['timestamp'] ?? Timestamp(0, 0),
       mapUserModel: Map<String, dynamic>.from(map['mapUserModel'] ?? {}),
       detail: (map['detail'] ?? '') as String,
+      nameProduct: map['nameProduct'] ?? '',
+      priceProduct: map['priceProduct'] ?? '',
+      stockProduct: map['stockProduct'] ?? '',
+      affiliateProduct: map['affiliateProduct'] ?? '',
+      urlProduct: map['urlProduct'] ?? '',
     );
   }
 
