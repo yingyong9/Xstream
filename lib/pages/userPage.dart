@@ -1,7 +1,10 @@
+import 'package:flutter_tiktok/pages/edit_profile.dart';
 import 'package:flutter_tiktok/pages/userDetailPage.dart';
 import 'package:flutter_tiktok/style/style.dart';
+import 'package:flutter_tiktok/utility/app_controller.dart';
 import 'package:flutter_tiktok/views/topToolRow.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tapped/tapped.dart';
 
 class UserPage extends StatefulWidget {
@@ -23,6 +26,8 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
+  AppController appController = Get.put(AppController());
+
   @override
   Widget build(BuildContext context) {
     Widget likeButton = Container(
@@ -33,8 +38,11 @@ class _UserPageState extends State<UserPage> {
         children: <Widget>[
           Tapped(
             child: _UserRightButton(
-              title: widget.isSelfPage ? 'AA' : 'BB',
+              title: widget.isSelfPage ? 'แก้ไขโปรไฟร์' : 'BB',
             ),
+            onTap: () {
+              Get.to(EditProfile());
+            },
           ),
         ],
       ),
@@ -59,93 +67,105 @@ class _UserPageState extends State<UserPage> {
               width: 1,
             ),
           ),
-          child: ClipOval(
-            child: Image.asset(
-              'images/logo3.png',
-              fit: BoxFit.cover,
-            ),
-          ),
+          child: Obx(() {
+            print(
+                '##18july currentUserModel ---> ${appController.currentUserModels.length}');
+            return appController.currentUserModels.isEmpty
+                ? ClipOval(
+                    child: Image.asset(
+                      'images/logo3.png',
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                : ClipOval(
+                    child: Image.network(
+                      appController.currentUserModels.last.urlAvatar,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+          }),
         ),
       ),
     );
-    Widget body = ListView(
-      physics: BouncingScrollPhysics(
-        parent: AlwaysScrollableScrollPhysics(),
-      ),
-      children: <Widget>[
-        Container(height: 20),
-        // 头像与关注
-        Stack(
-          alignment: Alignment.bottomLeft,
-          children: <Widget>[likeButton, avatar],
+    Widget body = Obx(() {
+      return appController.currentUserModels.isEmpty ? const SizedBox() : ListView(
+        physics: BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
         ),
-        Container(
-          color: ColorPlate.back1,
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(left: 18),
-                color: ColorPlate.back1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      '@用户名',
-                      style: StandardTextStyle.big,
-                    ),
-                    Container(height: 8),
-                    Text(
-                      '朴实无华，且枯燥',
-                      style: StandardTextStyle.smallWithOpacity.apply(
-                        color: Colors.white,
+        children: <Widget>[
+          Container(height: 20),
+          Stack(
+            alignment: Alignment.bottomLeft,
+            children: <Widget>[likeButton, avatar],
+          ),
+          Container(
+            color: ColorPlate.back1,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(left: 18),
+                  color: ColorPlate.back1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        '@${appController.currentUserModels.last.name}',
+                        style: StandardTextStyle.big,
                       ),
-                    ),
-                    Container(height: 10),
-                    Row(
-                      children: <Widget>[
-                        _UserTag(tag: '幽默'),
-                        _UserTag(tag: '机智'),
-                        _UserTag(tag: '枯燥'),
-                        _UserTag(tag: '狮子座'),
-                      ],
-                    ),
-                    Container(height: 10),
-                  ],
+                      Container(height: 8),
+                      // Text(
+                      //   '朴实无华，且枯燥',
+                      //   style: StandardTextStyle.smallWithOpacity.apply(
+                      //     color: Colors.white,
+                      //   ),
+                      // ),
+                      Container(height: 10),
+                      Row(
+                        children: <Widget>[
+                          _UserTag(tag: 'สินค้าของคุณ'),
+                          _UserTag(tag: 'เพิ่มเพื่อน'),
+                          _UserTag(tag: 'คำสั่งซื้อของคุณ'),
+                          // _UserTag(tag: '狮子座'),
+                        ],
+                      ),
+                      Container(height: 10),
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                color: ColorPlate.back1,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 2,
+                Container(
+                  color: ColorPlate.back1,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      TextGroup('356', 'กำลังติดตาม'),
+                      TextGroup('145', 'ผู้ติดตาม'),
+                      TextGroup('1423', 'ถูกใจ'),
+                    ],
+                  ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    TextGroup('356', '关注'),
-                    TextGroup('145万', '粉丝'),
-                    TextGroup('1423万', '获赞'),
-                  ],
-                ),
-              ),
-              Container(
-                height: 10,
-                margin: EdgeInsets.symmetric(horizontal: 12),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Colors.white.withOpacity(0.1),
+                Container(
+                  height: 10,
+                  margin: EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.white.withOpacity(0.1),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              _UserVideoTable(),
-            ],
+                _UserVideoTable(),
+              ],
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    });
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -200,6 +220,8 @@ class _UserPageState extends State<UserPage> {
     );
   }
 }
+
+void aaa() {}
 
 class _UserRightButton extends StatelessWidget {
   const _UserRightButton({
@@ -277,9 +299,9 @@ class _UserVideoTable extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              _PointSelectTextButton(true, '作品'),
-              _PointSelectTextButton(false, '关注'),
-              _PointSelectTextButton(false, '喜欢'),
+              _PointSelectTextButton(true, 'วีดีโอของฉัน'),
+              _PointSelectTextButton(false, 'ติดตาม'),
+              _PointSelectTextButton(false, 'ชื่นชอบ'),
             ],
           ),
         ),

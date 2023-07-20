@@ -1,7 +1,5 @@
-import 'package:flutter_tiktok/mock/video.dart';
 import 'package:flutter_tiktok/models/video_model.dart';
 import 'package:flutter_tiktok/pages/authen.dart';
-import 'package:flutter_tiktok/pages/cameraPage.dart';
 import 'package:flutter_tiktok/pages/followPage.dart';
 import 'package:flutter_tiktok/pages/searchPage.dart';
 import 'package:flutter_tiktok/pages/userPage.dart';
@@ -220,6 +218,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   );
                 },
                 onShare: () {},
+                videoModel: appController.videoModels[i],
               );
               // video
               Widget currentVideo = Center(
@@ -238,7 +237,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 userInfoWidget: VideoUserInfo(
                   desc: data.desc,
                   bottomPadding: hasBottomPadding ? 16.0 : 50.0,
-                  videoModel: i < appController.videoModels.length ? appController.videoModels[i] : appController.videoModels.last,
+                  videoModel: i < appController.videoModels.length
+                      ? appController.videoModels[i]
+                      : appController.videoModels.last,
                 ),
                 onSingleTap: () async {
                   if (player.controller.value.isPlaying) {

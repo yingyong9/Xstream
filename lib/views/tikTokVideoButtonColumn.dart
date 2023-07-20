@@ -1,6 +1,12 @@
-import 'package:flutter_tiktok/style/style.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:tapped/tapped.dart';
+
+import 'package:flutter_tiktok/models/video_model.dart';
+import 'package:flutter_tiktok/style/style.dart';
+import 'package:flutter_tiktok/utility/app_constant.dart';
+import 'package:flutter_tiktok/views/widget_image_network.dart';
+import 'package:flutter_tiktok/views/widget_text.dart';
 
 class TikTokButtonColumn extends StatelessWidget {
   final double? bottomPadding;
@@ -9,22 +15,25 @@ class TikTokButtonColumn extends StatelessWidget {
   final Function? onComment;
   final Function? onShare;
   final Function? onAvatar;
+  final VideoModel videoModel;
   const TikTokButtonColumn({
     Key? key,
     this.bottomPadding,
+    required this.isFavorite,
     this.onFavorite,
     this.onComment,
     this.onShare,
-    this.isFavorite: false,
     this.onAvatar,
+    required this.videoModel,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: SysSize.avatar,
+      // color: Colors.red,
+      // width: SysSize.avatar,
       margin: EdgeInsets.only(
-        bottom: bottomPadding ?? 50,
+        bottom: bottomPadding ?? 0,
         right: 12,
       ),
       child: Column(
@@ -35,20 +44,69 @@ class TikTokButtonColumn extends StatelessWidget {
             child: TikTokAvatar(),
             onTap: onAvatar,
           ),
-          FavoriteIcon(
-            onFavorite: onFavorite,
-            isFavorite: isFavorite,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FavoriteIcon(
+                onFavorite: onFavorite,
+                isFavorite: isFavorite,
+              ),
+            ],
           ),
-          _IconButton(
-            icon: IconToText(Icons.mode_comment, size: SysSize.iconBig - 4),
-            text: '4213',
-            onTap: onComment,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _IconButton(
+                icon: IconToText(Icons.mode_comment, size: SysSize.iconBig - 4),
+                text: '4213',
+                onTap: onComment,
+              ),
+            ],
           ),
-          _IconButton(
-            icon: IconToText(Icons.share, size: SysSize.iconBig),
-            text: '346',
-            onTap: onShare,
-          ),
+          videoModel.urlProduct!.isEmpty
+              ? const SizedBox()
+              : Container(
+                  margin: const EdgeInsets.only(right: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  width: 110,
+                  height: 170,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      WidgetImageNetwork(
+                        urlImage: videoModel.urlProduct!,
+                        size: 100,
+                        boxFit: BoxFit.cover,
+                      ),
+                      Text(
+                        videoModel.nameProduct!,
+                        style: TextStyle(color: ColorPlate.black),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Row(
+                        children: [
+                          WidgetText(
+                            data: '฿',
+                            textStyle: TextStyle(
+                                color: ColorPlate.black,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          WidgetText(
+                            data: videoModel.priceProduct!,
+                            textStyle: TextStyle(
+                                color: ColorPlate.black,
+                                fontWeight: FontWeight.w700, fontSize: 20),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  decoration: BoxDecoration(color: ColorPlate.white),
+                ),
           Container(
             width: SysSize.avatar,
             height: SysSize.avatar,
@@ -107,7 +165,10 @@ class TikTokAvatar extends StatelessWidget {
         color: Colors.black,
       ),
       child: ClipOval(
-       child: Image.asset('images/logo3.png', fit: BoxFit.cover,),
+        child: Image.asset(
+          'images/logo3.png',
+          fit: BoxFit.cover,
+        ),
       ),
     );
     Widget addButton = Container(

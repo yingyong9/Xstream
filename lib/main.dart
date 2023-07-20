@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_tiktok/pages/cameraPage.dart';
 import 'package:flutter_tiktok/pages/homePage.dart';
 import 'package:flutter_tiktok/style/style.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +13,6 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp().then((value) {
-
-   
-
     FirebaseAuth.instance.authStateChanges().listen((event) {
       if (event != null) {
         AppService().findCurrentUserModel();

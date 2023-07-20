@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tiktok/models/otp_require_thaibulk.dart';
 import 'package:flutter_tiktok/models/user_model.dart';
 import 'package:flutter_tiktok/models/video_model.dart';
-import 'package:flutter_tiktok/pages/check_video_upload.dart';
 import 'package:flutter_tiktok/pages/detail_post.dart';
 import 'package:flutter_tiktok/pages/homePage.dart';
 import 'package:flutter_tiktok/utility/app_constant.dart';
@@ -19,15 +18,33 @@ import 'package:ftpconnect/ftpconnect.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
+import 'package:path/path.dart';
 
 class AppService {
   AppController appController = Get.put(AppController());
 
-  Future<void> processFtpUploadAndInsertDataVideo(
-      {required File fileVideo,
-      required String nameFileVideo,
-      required String urlThumbnail,
-      required String detail}) async {
+  Future<void> processTakePhoto() async {
+    var result = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, maxWidth: 800, maxHeight: 800);
+    if (result != null) {
+      File file = File(result.path);
+      appController.files.add(file);
+      String nameFile = basename(file.path);
+      appController.nameFiles.add(nameFile);
+    }
+  }
+
+  Future<void> processFtpUploadAndInsertDataVideo({
+    required File fileVideo,
+    required String nameFileVideo,
+    required String urlThumbnail,
+    required String detail,
+    String? nameProduct,
+    String? priceProduct,
+    String? stockProduct,
+    String? affiliateProduct,
+    String? urlProduct,
+  }) async {
     FTPConnect ftpConnect = FTPConnect(AppConstant.host,
         user: AppConstant.user, pass: AppConstant.pass);
     await ftpConnect.connect();
@@ -46,6 +63,11 @@ class AppService {
           DateTime.now(),
         ),
         mapUserModel: appController.currentUserModels.last.toMap(),
+        nameProduct: nameProduct ?? '',
+        priceProduct: priceProduct ?? '',
+        stockProduct: stockProduct ?? '',
+        affiliateProduct: affiliateProduct ?? '',
+        urlProduct: urlProduct ?? '',
       );
       FirebaseFirestore.instance
           .collection('video')
@@ -72,6 +94,20 @@ class AppService {
     });
 
     return urlThumbnail;
+  }
+
+  Future<String?> processUploadFile({required String path}) async {
+    String? urlImage;
+
+    FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+    Reference reference =
+        firebaseStorage.ref().child('$path/${appController.nameFiles.last}');
+    UploadTask uploadTask = reference.putFile(appController.files.last);
+    await uploadTask.whenComplete(() async {
+      urlImage = await reference.getDownloadURL();
+    });
+
+    return urlImage;
   }
 
   Future<void> verifyOTPThaibulk(

@@ -5,12 +5,14 @@ class WidgetText extends StatelessWidget {
   const WidgetText({
     Key? key,
     required this.data,
+    this.textStyle,
   }) : super(key: key);
 
   final String data;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
-    return Text(data);
+    return Text(data, style: textStyle,);
   }
 }

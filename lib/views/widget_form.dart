@@ -9,16 +9,22 @@ class WidgetForm extends StatelessWidget {
     this.textEditingController,
     this.hint,
     this.textInputType,
+    this.labelWidget,
+    this.changeFunc,
   }) : super(key: key);
 
   final TextEditingController? textEditingController;
   final String? hint;
   final TextInputType? textInputType;
+  final Widget? labelWidget;
+  final Function(String)? changeFunc;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(keyboardType: textInputType ?? TextInputType.text,
+    return TextFormField(onChanged: changeFunc,
+      keyboardType: textInputType ?? TextInputType.text,
       decoration: InputDecoration(
+        label: labelWidget,
         hintText: hint,
         hintStyle: StandardTextStyle.normalWithOpacity,
         filled: true,
