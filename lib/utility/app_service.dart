@@ -45,6 +45,8 @@ class AppService {
     String? affiliateProduct,
     String? urlProduct,
   }) async {
+    //  Get.offAll(HomePage());
+
     FTPConnect ftpConnect = FTPConnect(AppConstant.host,
         user: AppConstant.user, pass: AppConstant.pass);
     await ftpConnect.connect();
@@ -75,6 +77,9 @@ class AppService {
           .set(videoModel.toMap())
           .then((value) {
         print('Insert Data Video Success');
+        if (appController.files.isNotEmpty) {
+          appController.files.clear();
+        }
         Get.offAll(HomePage());
         AppSnackBar(title: 'Upload Video Success', message: 'Thankyou')
             .normalSnackBar();
