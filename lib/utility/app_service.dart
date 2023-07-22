@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
@@ -6,7 +7,9 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tiktok/models/amphure_model.dart';
 import 'package:flutter_tiktok/models/otp_require_thaibulk.dart';
+import 'package:flutter_tiktok/models/province_model.dart';
 import 'package:flutter_tiktok/models/user_model.dart';
 import 'package:flutter_tiktok/models/video_model.dart';
 import 'package:flutter_tiktok/pages/detail_post.dart';
@@ -45,6 +48,8 @@ class AppService {
     String? affiliateProduct,
     String? urlProduct,
   }) async {
+    //  Get.offAll(HomePage());
+
     FTPConnect ftpConnect = FTPConnect(AppConstant.host,
         user: AppConstant.user, pass: AppConstant.pass);
     await ftpConnect.connect();
@@ -75,6 +80,9 @@ class AppService {
           .set(videoModel.toMap())
           .then((value) {
         print('Insert Data Video Success');
+        if (appController.files.isNotEmpty) {
+          appController.files.clear();
+        }
         Get.offAll(HomePage());
         AppSnackBar(title: 'Upload Video Success', message: 'Thankyou')
             .normalSnackBar();
@@ -323,5 +331,43 @@ class AppService {
               message: 'ขออภัยด้วยไม่สามารถใช้ วีดีโอนี่ได้')
           .errorSnackBar();
     }
+  }
+
+  Future<void> readAllProvince() async {
+    if (appController.provinceModels.isNotEmpty) {
+      appController.provinceModels.clear();
+      appController.chooseProvinceModels.clear();
+      appController.chooseProvinceModels.add(null);
+
+      appController.amphureModels.clear();
+      appController.chooseAmphureModels.clear();
+      appController.chooseAmphureModels.add(null);
+    }
+
+    String urlApi = 'https://www.androidthai.in.th/flutter/getAllprovinces.php';
+
+    await Dio().get(urlApi).then((value) {
+      for (var element in json.decode(value.data)) {
+        ProvinceModel provinceModel = ProvinceModel.fromMap(element);
+        appController.provinceModels.add(provinceModel);
+      }
+    });
+  }
+
+  Future<void> readAmphure({required String provinceId}) async {
+    if (appController.amphureModels.isNotEmpty) {
+      appController.amphureModels.clear();
+      appController.chooseAmphureModels.clear();
+      appController.chooseAmphureModels.add(null);
+    }
+
+    String urlApi =
+        'https://www.androidthai.in.th/flutter/getAmpByProvince.php?isAdd=true&province_id=$provinceId';
+    await Dio().get(urlApi).then((value) {
+      for (var element in json.decode(value.data)) {
+        AmphureModel amphureModel = AmphureModel.fromMap(element);
+        appController.amphureModels.add(amphureModel);
+      }
+    });
   }
 }

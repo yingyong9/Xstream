@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:flutter_tiktok/mock/video.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tiktok/models/video_model.dart';
 import 'package:video_player/video_player.dart';
@@ -11,29 +10,26 @@ typedef LoadMoreVideo = Future<List<VPVideoController>> Function(
   List<VPVideoController> list,
 );
 
-/// TikTokVideoListController是一系列视频的控制器，内部管理了视频控制器数组
-/// 提供了预加载/释放/加载更多功能
+
 class TikTokVideoListController extends ChangeNotifier {
   TikTokVideoListController({
     this.loadMoreCount = 1,
     this.preloadCount = 2,
 
-    /// TODO: VideoPlayer有bug(安卓)，当前只能设置为0
-    /// 设置为0后，任何不在画面内的视频都会被释放
-    /// 若不设置为0，安卓将会无法加载第三个开始的视频
+   
     this.disposeCount = 0,
   });
 
-  /// 到第几个触发预加载，例如：1:最后一个，2:倒数第二个
+  
   final int loadMoreCount;
 
-  /// 预加载多少个视频
+  
   final int preloadCount;
 
-  /// 超出多少个，就释放视频
+  
   final int disposeCount;
 
-  /// 提供视频的builder
+  
   LoadMoreVideo? _videoProvider;
 
   loadIndex(int target, {bool reload = false}) {

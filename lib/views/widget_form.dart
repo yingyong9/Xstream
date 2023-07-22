@@ -21,7 +21,8 @@ class WidgetForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(onChanged: changeFunc,
+    return TextFormField(
+      onChanged: changeFunc,
       keyboardType: textInputType ?? TextInputType.text,
       decoration: InputDecoration(
         label: labelWidget,

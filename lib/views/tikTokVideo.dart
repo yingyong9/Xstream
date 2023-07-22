@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_tiktok/models/video_model.dart';
 import 'package:flutter_tiktok/style/style.dart';
 import 'package:flutter_tiktok/views/tikTokVideoGesture.dart';
+import 'package:flutter_tiktok/views/widget_image.dart';
 
 ///
 /// TikTok风格的一个视频页组件，覆盖在video上，提供以下功能：
@@ -174,9 +175,14 @@ class VideoUserInfo extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            videoModel == null ? '' : '@${videoModel!.mapUserModel["name"]}',
-            style: StandardTextStyle.big,
+          Row(
+            children: [
+              WidgetImage(path: 'images/redbottom.png', size: 30,),
+              Text(
+                videoModel == null ? '' : '@${videoModel!.mapUserModel["name"]}',
+                style: StandardTextStyle.big,
+              ),
+            ],
           ),
           Container(height: 6),
           Text(
