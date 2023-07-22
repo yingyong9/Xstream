@@ -1,5 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_tiktok/pages/confirm_buy_product.dart';
+import 'package:flutter_tiktok/utility/app_controller.dart';
+import 'package:flutter_tiktok/utility/app_dialog.dart';
+import 'package:flutter_tiktok/views/widget_button.dart';
+import 'package:flutter_tiktok/views/widget_icon_button.dart';
+import 'package:get/get.dart';
 import 'package:tapped/tapped.dart';
 
 import 'package:flutter_tiktok/models/video_model.dart';
@@ -29,6 +35,8 @@ class TikTokButtonColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppController appController = Get.put(AppController());
+
     return Container(
       // color: Colors.red,
       // width: SysSize.avatar,
@@ -65,47 +73,123 @@ class TikTokButtonColumn extends StatelessWidget {
           ),
           videoModel.urlProduct!.isEmpty
               ? const SizedBox()
-              : Container(
-                  margin: const EdgeInsets.only(right: 12),
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  width: 110,
-                  height: 170,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      WidgetImageNetwork(
-                        urlImage: videoModel.urlProduct!,
-                        size: 100,
-                        boxFit: BoxFit.cover,
-                      ),
-                      Text(
-                        videoModel.nameProduct!,
-                        style: TextStyle(color: ColorPlate.black),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Row(
-                        children: [
-                          WidgetText(
-                            data: '฿',
-                            textStyle: TextStyle(
-                                color: ColorPlate.black,
-                                fontWeight: FontWeight.w700),
+              : InkWell(
+                  onTap: () {
+                    appController.amount.value = 1;
+                    AppDialog().normalDialog(
+                        alignmentGeometry: Alignment(0, -0.3),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              children: [
+                                WidgetText(
+                                  data: 'จำนวน',
+                                  textStyle: TextStyle(color: Colors.black),
+                                ),
+                                const Spacer(),
+                                WidgetIconButton(
+                                  iconData: Icons.remove_circle_outline,
+                                  color: Colors.black,
+                                  pressFunc: () {
+                                    if (appController.amount.value > 1) {
+                                      appController.amount.value--;
+                                    }
+                                  },
+                                ),
+                                Obx(() {
+                                  return WidgetText(
+                                    data: appController.amount.toString(),
+                                    textStyle: TextStyle(color: Colors.black),
+                                  );
+                                }),
+                                WidgetIconButton(
+                                  iconData: Icons.add_circle_outline,
+                                  color: Colors.black,
+                                  pressFunc: () {
+                                    appController.amount.value++;
+                                  },
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                WidgetText(
+                                  data: 'ทั้งหมด',
+                                  textStyle: TextStyle(color: Colors.black),
+                                ),
+                                const Spacer(),
+                                Obx(() {
+                                  return WidgetText(
+                                    data:
+                                        '฿ ${int.parse(videoModel.priceProduct!) * appController.amount.value}',
+                                    textStyle: TextStyle(color: Colors.black),
+                                  );
+                                }),
+                                const SizedBox(
+                                  width: 50,
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                        firstAction: SizedBox(
+                          width: double.infinity,
+                          child: WidgetButton(
+                            color: ColorPlate.red,
+                            label: 'ยืนยัน',
+                            pressFunc: () {
+                              Get.back();
+                              Get.to(ConfirmBuyProduct(
+                                  videoModel: videoModel,
+                                  amountProduct: appController.amount.value));
+                            },
                           ),
-                          WidgetText(
-                            data: videoModel.priceProduct!,
-                            textStyle: TextStyle(
-                                color: ColorPlate.black,
-                                fontWeight: FontWeight.w700, fontSize: 20),
-                          ),
-                        ],
-                      ),
-                    ],
+                        ));
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    width: 110,
+                    height: 170,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        WidgetImageNetwork(
+                          urlImage: videoModel.urlProduct!,
+                          size: 100,
+                          boxFit: BoxFit.cover,
+                        ),
+                        Text(
+                          videoModel.nameProduct!,
+                          style: TextStyle(color: ColorPlate.black),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Row(
+                          children: [
+                            WidgetText(
+                              data: '฿',
+                              textStyle: TextStyle(
+                                  color: ColorPlate.black,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            WidgetText(
+                              data: videoModel.priceProduct!,
+                              textStyle: TextStyle(
+                                  color: ColorPlate.black,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 20),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    decoration: BoxDecoration(color: ColorPlate.white),
                   ),
-                  decoration: BoxDecoration(color: ColorPlate.white),
                 ),
           Container(
             width: SysSize.avatar,
