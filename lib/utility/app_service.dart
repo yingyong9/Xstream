@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tiktok/models/amphure_model.dart';
+import 'package:flutter_tiktok/models/districe_model.dart';
 import 'package:flutter_tiktok/models/otp_require_thaibulk.dart';
 import 'package:flutter_tiktok/models/province_model.dart';
 import 'package:flutter_tiktok/models/user_model.dart';
@@ -342,6 +343,10 @@ class AppService {
       appController.amphureModels.clear();
       appController.chooseAmphureModels.clear();
       appController.chooseAmphureModels.add(null);
+
+      appController.districeModels.clear();
+      appController.chooseDistriceModels.clear();
+      appController.chooseDistriceModels.add(null);
     }
 
     String urlApi = 'https://www.androidthai.in.th/flutter/getAllprovinces.php';
@@ -367,6 +372,23 @@ class AppService {
       for (var element in json.decode(value.data)) {
         AmphureModel amphureModel = AmphureModel.fromMap(element);
         appController.amphureModels.add(amphureModel);
+      }
+    });
+  }
+
+  Future<void> readDistrice({required String amphureId}) async {
+    if (appController.districeModels.isNotEmpty) {
+      appController.districeModels.clear();
+      appController.chooseDistriceModels.clear();
+      appController.chooseDistriceModels.add(null);
+    }
+
+    String urlApi =
+        'https://www.androidthai.in.th/flutter/getDistriceByAmphure.php?isAdd=true&amphure_id=$amphureId';
+    await Dio().get(urlApi).then((value) {
+      for (var element in json.decode(value.data)) {
+        DistriceModel districeModel = DistriceModel.fromMap(element);
+        appController.districeModels.add(districeModel);
       }
     });
   }

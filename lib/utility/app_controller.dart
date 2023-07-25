@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_tiktok/models/amphure_model.dart';
+import 'package:flutter_tiktok/models/districe_model.dart';
 import 'package:flutter_tiktok/models/province_model.dart';
 import 'package:flutter_tiktok/models/user_model.dart';
 import 'package:flutter_tiktok/models/video_model.dart';
@@ -20,4 +21,7 @@ class AppController extends GetxController {
 
   RxList<AmphureModel> amphureModels = <AmphureModel>[].obs;
   RxList<AmphureModel?> chooseAmphureModels = <AmphureModel?>[null].obs;
+
+  RxList<DistriceModel> districeModels = <DistriceModel>[].obs;
+  RxList<DistriceModel?> chooseDistriceModels = <DistriceModel?>[null].obs;
 }
