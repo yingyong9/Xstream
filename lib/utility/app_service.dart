@@ -392,4 +392,18 @@ class AppService {
       }
     });
   }
+
+  Future<void> processEditProfile({required Map<String, dynamic> map}) async {
+    FirebaseFirestore.instance
+        .collection('user')
+        .doc(appController.currentUserModels.last.uid)
+        .update(map)
+        .then((value) {
+      findCurrentUserModel();
+      AppSnackBar(
+              title: 'แก้ไขโปรไฟล์ สำเร็จ',
+              message: 'แก้ไขโปรไฟล์ สำเร็จ ขอบคุณครับ')
+          .normalSnackBar();
+    });
+  }
 }
