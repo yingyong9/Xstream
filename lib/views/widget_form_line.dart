@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_tiktok/style/style.dart';
 
-class WidgetForm extends StatelessWidget {
-  const WidgetForm({
+class WidgetFormLine extends StatelessWidget {
+  const WidgetFormLine({
     Key? key,
     this.textEditingController,
     this.hint,

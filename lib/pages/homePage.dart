@@ -1,5 +1,6 @@
 import 'package:flutter_tiktok/models/video_model.dart';
 import 'package:flutter_tiktok/pages/authen.dart';
+import 'package:flutter_tiktok/pages/edit_profile.dart';
 import 'package:flutter_tiktok/pages/followPage.dart';
 import 'package:flutter_tiktok/pages/searchPage.dart';
 import 'package:flutter_tiktok/pages/userPage.dart';
@@ -118,7 +119,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         currentPage = MsgPage();
         break;
       case TikTokPageTag.me:
-        currentPage = UserPage(isSelfPage: true);
+        // currentPage = UserPage(isSelfPage: true);
+        currentPage = EditProfile();
         break;
     }
     double a = MediaQuery.of(context).size.aspectRatio;

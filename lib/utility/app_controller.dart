@@ -24,4 +24,6 @@ class AppController extends GetxController {
 
   RxList<DistriceModel> districeModels = <DistriceModel>[].obs;
   RxList<DistriceModel?> chooseDistriceModels = <DistriceModel?>[null].obs;
+
+  RxBool change = false.obs;
 }

@@ -6,11 +6,17 @@ class UserModel {
   final String uid;
   final String urlAvatar;
   final String phone;
+  final String? phoneContact;
+  final String? linkLine;
+  final String? linkMessaging;
   UserModel({
     required this.name,
     required this.uid,
     required this.urlAvatar,
     required this.phone,
+    this.phoneContact,
+    this.linkLine,
+    this.linkMessaging,
   });
 
   Map<String, dynamic> toMap() {
@@ -19,6 +25,9 @@ class UserModel {
       'uid': uid,
       'urlAvatar': urlAvatar,
       'phone': phone,
+      'phoneContact': phoneContact,
+      'linkLine': linkLine,
+      'linkMessaging': linkMessaging,
     };
   }
 
@@ -28,6 +37,9 @@ class UserModel {
       uid: (map['uid'] ?? '') as String,
       urlAvatar: (map['urlAvatar'] ?? '') as String,
       phone: (map['phone'] ?? '') as String,
+      phoneContact: map['phoneContact'] ?? '',
+      linkLine: map['linkLine'] ?? '',
+      linkMessaging: map['linkMessaging']  ?? '',
     );
   }
 
