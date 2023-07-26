@@ -112,12 +112,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     switch (tabBarType) {
       case TikTokPageTag.home:
         break;
-      case TikTokPageTag.follow:
-        currentPage = FollowPage();
-        break;
-      case TikTokPageTag.msg:
-        currentPage = MsgPage();
-        break;
+      // case TikTokPageTag.follow:
+      //   currentPage = FollowPage();
+      //   break;
+      // case TikTokPageTag.msg:
+      //   currentPage = MsgPage();
+      //   break;
       case TikTokPageTag.me:
         // currentPage = UserPage(isSelfPage: true);
         currentPage = EditProfile();

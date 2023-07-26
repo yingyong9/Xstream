@@ -40,15 +40,15 @@ class TikTokTabBar extends StatelessWidget {
             onTap: () => onTabSwitch?.call(TikTokPageTag.home),
           ),
         ),
-        Expanded(
-          child: GestureDetector(
-            child: SelectText(
-              isSelect: current == TikTokPageTag.follow,
-              title: 'Follow',
-            ),
-            onTap: () => onTabSwitch?.call(TikTokPageTag.follow),
-          ),
-        ),
+        // Expanded(
+        //   child: GestureDetector(
+        //     child: SelectText(
+        //       isSelect: current == TikTokPageTag.follow,
+        //       title: 'Follow',
+        //     ),
+        //     onTap: () => onTabSwitch?.call(TikTokPageTag.follow),
+        //   ),
+        // ),
         Expanded(
           child: GestureDetector(
             child: Icon(
@@ -61,15 +61,15 @@ class TikTokTabBar extends StatelessWidget {
             },
           ),
         ),
-        Expanded(
-          child: GestureDetector(
-            child: SelectText(
-              isSelect: current == TikTokPageTag.msg,
-              title: 'Message',
-            ),
-            onTap: () => onTabSwitch?.call(TikTokPageTag.msg),
-          ),
-        ),
+        // Expanded(
+        //   child: GestureDetector(
+        //     child: SelectText(
+        //       isSelect: current == TikTokPageTag.msg,
+        //       title: 'Message',
+        //     ),
+        //     onTap: () => onTabSwitch?.call(TikTokPageTag.msg),
+        //   ),
+        // ),
         Expanded(
           child: GestureDetector(
             child: SelectText(
