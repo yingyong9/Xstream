@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_tiktok/views/widget_avatar.dart';
+import 'package:flutter_tiktok/views/widget_image.dart';
 import 'package:get/get.dart';
 import 'package:tapped/tapped.dart';
 
@@ -23,8 +24,6 @@ class TikTokButtonColumn extends StatelessWidget {
   final Function? onShare;
   final Function? onAvatar;
   final VideoModel videoModel;
-  
-
 
   const TikTokButtonColumn({
     Key? key,
@@ -53,7 +52,9 @@ class TikTokButtonColumn extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           Tapped(
-            child: TikTokAvatar(videoModel: videoModel,),
+            child: TikTokAvatar(
+              videoModel: videoModel,
+            ),
             onTap: onAvatar,
           ),
           Row(
@@ -75,126 +76,7 @@ class TikTokButtonColumn extends StatelessWidget {
               ),
             ],
           ),
-          videoModel.urlProduct!.isEmpty
-              ? const SizedBox()
-              : InkWell(
-                  onTap: () {
-                    appController.amount.value = 1;
-                    AppDialog().normalDialog(
-                        alignmentGeometry: Alignment(0, -0.3),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Row(
-                              children: [
-                                WidgetText(
-                                  data: 'จำนวน',
-                                  textStyle: TextStyle(color: Colors.black),
-                                ),
-                                const Spacer(),
-                                WidgetIconButton(
-                                  iconData: Icons.remove_circle_outline,
-                                  color: Colors.black,
-                                  pressFunc: () {
-                                    if (appController.amount.value > 1) {
-                                      appController.amount.value--;
-                                    }
-                                  },
-                                ),
-                                Obx(() {
-                                  return WidgetText(
-                                    data: appController.amount.toString(),
-                                    textStyle: TextStyle(color: Colors.black),
-                                  );
-                                }),
-                                WidgetIconButton(
-                                  iconData: Icons.add_circle_outline,
-                                  color: Colors.black,
-                                  pressFunc: () {
-                                    appController.amount.value++;
-                                  },
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                WidgetText(
-                                  data: 'ทั้งหมด',
-                                  textStyle: TextStyle(color: Colors.black),
-                                ),
-                                const Spacer(),
-                                Obx(() {
-                                  return WidgetText(
-                                    data:
-                                        '฿ ${int.parse(videoModel.priceProduct!) * appController.amount.value}',
-                                    textStyle: TextStyle(color: Colors.black),
-                                  );
-                                }),
-                                const SizedBox(
-                                  width: 50,
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                        firstAction: SizedBox(
-                          width: double.infinity,
-                          child: WidgetButton(
-                            color: ColorPlate.red,
-                            label: 'ยืนยัน',
-                            pressFunc: () {
-                              Get.back();
-                              Get.to(ConfirmBuyProduct(
-                                  videoModel: videoModel,
-                                  amountProduct: appController.amount.value));
-                            },
-                          ),
-                        ));
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 12),
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    width: 110,
-                    height: 170,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        WidgetImageNetwork(
-                          urlImage: videoModel.urlProduct!,
-                          size: 100,
-                          boxFit: BoxFit.cover,
-                        ),
-                        Text(
-                          videoModel.nameProduct!,
-                          style: TextStyle(color: ColorPlate.black),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Row(
-                          children: [
-                            WidgetText(
-                              data: '฿',
-                              textStyle: TextStyle(
-                                  color: ColorPlate.black,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            WidgetText(
-                              data: videoModel.priceProduct!,
-                              textStyle: TextStyle(
-                                  color: ColorPlate.black,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 20),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    decoration: BoxDecoration(color: ColorPlate.white),
-                  ),
-                ),
+          displayImageProduct(appController),
           Container(
             width: SysSize.avatar,
             height: SysSize.avatar,
@@ -207,6 +89,184 @@ class TikTokButtonColumn extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget displayImageProduct(AppController appController) {
+    return videoModel.urlProduct!.isEmpty
+        ? const SizedBox()
+        : InkWell(
+            onTap: () {
+              // dialogChooseAmountProduct(appController);
+
+              Get.dialog(AlertDialog(
+                icon: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    WidgetAvatar(
+                        urlImage: videoModel.mapUserModel['urlAvatar']),
+                  ],
+                ),
+                title: WidgetText(data: videoModel.mapUserModel['name']),
+                content: Column(mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        WidgetImage(
+                          path: 'images/call.png',
+                          size: 36,
+                        ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        WidgetText(data: videoModel.mapUserModel['phoneContact']),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        WidgetImage(
+                          path: 'images/line.png',
+                          size: 36,
+                        ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        WidgetText(data: videoModel.mapUserModel['linkLine']),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        WidgetImage(
+                          path: 'images/messaging.png',
+                          size: 36,
+                        ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        WidgetText(data: videoModel.mapUserModel['linkMessaging']),
+                      ],
+                    ),
+                  ],
+                ),
+              ));
+            },
+            child: Container(
+              margin: const EdgeInsets.only(right: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              width: 110,
+              height: 170,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  WidgetImageNetwork(
+                    urlImage: videoModel.urlProduct!,
+                    size: 100,
+                    boxFit: BoxFit.cover,
+                  ),
+                  Text(
+                    videoModel.nameProduct!,
+                    style: TextStyle(color: ColorPlate.black),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Row(
+                    children: [
+                      WidgetText(
+                        data: '฿',
+                        textStyle: TextStyle(
+                            color: ColorPlate.black,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      WidgetText(
+                        data: videoModel.priceProduct!,
+                        textStyle: TextStyle(
+                            color: ColorPlate.black,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              decoration: BoxDecoration(color: ColorPlate.white),
+            ),
+          );
+  }
+
+  void dialogChooseAmountProduct(AppController appController) {
+    appController.amount.value = 1;
+    AppDialog().normalDialog(
+        alignmentGeometry: Alignment(0, -0.3),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                WidgetText(
+                  data: 'จำนวน',
+                  textStyle: TextStyle(color: Colors.black),
+                ),
+                const Spacer(),
+                WidgetIconButton(
+                  iconData: Icons.remove_circle_outline,
+                  color: Colors.black,
+                  pressFunc: () {
+                    if (appController.amount.value > 1) {
+                      appController.amount.value--;
+                    }
+                  },
+                ),
+                Obx(() {
+                  return WidgetText(
+                    data: appController.amount.toString(),
+                    textStyle: TextStyle(color: Colors.black),
+                  );
+                }),
+                WidgetIconButton(
+                  iconData: Icons.add_circle_outline,
+                  color: Colors.black,
+                  pressFunc: () {
+                    appController.amount.value++;
+                  },
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                WidgetText(
+                  data: 'ทั้งหมด',
+                  textStyle: TextStyle(color: Colors.black),
+                ),
+                const Spacer(),
+                Obx(() {
+                  return WidgetText(
+                    data:
+                        '฿ ${int.parse(videoModel.priceProduct!) * appController.amount.value}',
+                    textStyle: TextStyle(color: Colors.black),
+                  );
+                }),
+                const SizedBox(
+                  width: 50,
+                )
+              ],
+            ),
+          ],
+        ),
+        firstAction: SizedBox(
+          width: double.infinity,
+          child: WidgetButton(
+            color: ColorPlate.red,
+            label: 'ยืนยัน',
+            pressFunc: () {
+              Get.back();
+              Get.to(ConfirmBuyProduct(
+                  videoModel: videoModel,
+                  amountProduct: appController.amount.value));
+            },
+          ),
+        ));
   }
 }
 
@@ -281,7 +341,6 @@ class TikTokAvatar extends StatelessWidget {
   }
 }
 
-/// 把IconData转换为文字，使其可以使用文字样式
 class IconToText extends StatelessWidget {
   final IconData? icon;
   final TextStyle? style;
