@@ -98,56 +98,7 @@ class TikTokButtonColumn extends StatelessWidget {
             onTap: () {
               // dialogChooseAmountProduct(appController);
 
-              Get.dialog(AlertDialog(
-                icon: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    WidgetAvatar(
-                        urlImage: videoModel.mapUserModel['urlAvatar']),
-                  ],
-                ),
-                title: WidgetText(data: videoModel.mapUserModel['name']),
-                content: Column(mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        WidgetImage(
-                          path: 'images/call.png',
-                          size: 36,
-                        ),
-                        const SizedBox(
-                          width: 16,
-                        ),
-                        WidgetText(data: videoModel.mapUserModel['phoneContact']),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        WidgetImage(
-                          path: 'images/line.png',
-                          size: 36,
-                        ),
-                        const SizedBox(
-                          width: 16,
-                        ),
-                        WidgetText(data: videoModel.mapUserModel['linkLine']),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        WidgetImage(
-                          path: 'images/messaging.png',
-                          size: 36,
-                        ),
-                        const SizedBox(
-                          width: 16,
-                        ),
-                        WidgetText(data: videoModel.mapUserModel['linkMessaging']),
-                      ],
-                    ),
-                  ],
-                ),
-              ));
+              dialogShowUser();
             },
             child: Container(
               margin: const EdgeInsets.only(right: 12),
@@ -193,6 +144,59 @@ class TikTokButtonColumn extends StatelessWidget {
               decoration: BoxDecoration(color: ColorPlate.white),
             ),
           );
+  }
+
+  void dialogShowUser() {
+    Get.dialog(AlertDialog(
+      icon: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          WidgetAvatar(urlImage: videoModel.mapUserModel['urlAvatar']),
+        ],
+      ),
+      title: WidgetText(data: videoModel.mapUserModel['name']),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              WidgetImage(
+                path: 'images/call.png',
+                size: 36,
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+              WidgetText(data: videoModel.mapUserModel['phoneContact']),
+            ],
+          ),
+          Row(
+            children: [
+              WidgetImage(
+                path: 'images/line.png',
+                size: 36,
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+              WidgetText(data: videoModel.mapUserModel['linkLine']),
+            ],
+          ),
+          Row(
+            children: [
+              WidgetImage(
+                path: 'images/messaging.png',
+                size: 36,
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+              WidgetText(data: videoModel.mapUserModel['linkMessaging']),
+            ],
+          ),
+        ],
+      ),
+    ));
   }
 
   void dialogChooseAmountProduct(AppController appController) {

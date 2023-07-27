@@ -48,6 +48,9 @@ class AppService {
     String? stockProduct,
     String? affiliateProduct,
     String? urlProduct,
+    String? phoneContact,
+    String? linkLine,
+    String? linkMessaging,
   }) async {
     //  Get.offAll(HomePage());
 
