@@ -6,6 +6,7 @@ import 'package:flutter_tiktok/utility/app_controller.dart';
 import 'package:flutter_tiktok/utility/app_service.dart';
 import 'package:flutter_tiktok/utility/app_snackbar.dart';
 import 'package:flutter_tiktok/views/widget_form.dart';
+import 'package:flutter_tiktok/views/widget_image.dart';
 import 'package:flutter_tiktok/views/widget_text.dart';
 import 'package:get/get.dart';
 
@@ -42,6 +43,19 @@ class _DetailPostState extends State<DetailPost> {
   TextEditingController priceController = TextEditingController();
   TextEditingController stockController = TextEditingController();
   TextEditingController affiliateController = TextEditingController();
+  TextEditingController phoneContactController = TextEditingController();
+  TextEditingController linkLineController = TextEditingController();
+  TextEditingController linkMessageController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (appController.currentUserModels.isNotEmpty) {
+      phoneContactController.text = appController.currentUserModels.last.phoneContact ?? '';
+      linkLineController.text = appController.currentUserModels.last.linkLine ?? '';
+      linkMessageController.text = appController.currentUserModels.last.linkMessaging ?? '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,6 +157,57 @@ class _DetailPostState extends State<DetailPost> {
                                           affiliateController,
                                       labelWidget:
                                           WidgetText(data: 'นายหน้า :'),
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    WidgetForm(textEditingController: phoneContactController,
+                                      hint: 'phone',
+                                      prefixWidget: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          WidgetImage(
+                                            path: 'images/call.png',
+                                            size: 36,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    WidgetForm(textEditingController: linkLineController,
+                                      hint: 'LinkLine',
+                                      prefixWidget: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          WidgetImage(
+                                            path: 'images/line.png',
+                                            size: 36,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    WidgetForm(textEditingController: linkMessageController,
+                                      hint: 'LinkMessaging',
+                                      prefixWidget: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          WidgetImage(
+                                            path: 'images/messaging.png',
+                                            size: 36,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
                                     ),
                                     const SizedBox(
                                       height: 64,
