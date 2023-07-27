@@ -1,16 +1,17 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_tiktok/pages/confirm_buy_product.dart';
-import 'package:flutter_tiktok/utility/app_controller.dart';
-import 'package:flutter_tiktok/utility/app_dialog.dart';
-import 'package:flutter_tiktok/views/widget_button.dart';
-import 'package:flutter_tiktok/views/widget_icon_button.dart';
+import 'package:flutter_tiktok/views/widget_avatar.dart';
 import 'package:get/get.dart';
 import 'package:tapped/tapped.dart';
 
 import 'package:flutter_tiktok/models/video_model.dart';
+import 'package:flutter_tiktok/pages/confirm_buy_product.dart';
 import 'package:flutter_tiktok/style/style.dart';
 import 'package:flutter_tiktok/utility/app_constant.dart';
+import 'package:flutter_tiktok/utility/app_controller.dart';
+import 'package:flutter_tiktok/utility/app_dialog.dart';
+import 'package:flutter_tiktok/views/widget_button.dart';
+import 'package:flutter_tiktok/views/widget_icon_button.dart';
 import 'package:flutter_tiktok/views/widget_image_network.dart';
 import 'package:flutter_tiktok/views/widget_text.dart';
 
@@ -22,6 +23,9 @@ class TikTokButtonColumn extends StatelessWidget {
   final Function? onShare;
   final Function? onAvatar;
   final VideoModel videoModel;
+  
+
+
   const TikTokButtonColumn({
     Key? key,
     this.bottomPadding,
@@ -49,7 +53,7 @@ class TikTokButtonColumn extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           Tapped(
-            child: TikTokAvatar(),
+            child: TikTokAvatar(videoModel: videoModel,),
             onTap: onAvatar,
           ),
           Row(
@@ -232,7 +236,10 @@ class FavoriteIcon extends StatelessWidget {
 class TikTokAvatar extends StatelessWidget {
   const TikTokAvatar({
     Key? key,
+    required this.videoModel,
   }) : super(key: key);
+
+  final VideoModel videoModel;
 
   @override
   Widget build(BuildContext context) {
@@ -248,12 +255,7 @@ class TikTokAvatar extends StatelessWidget {
         borderRadius: BorderRadius.circular(SysSize.avatar / 2.0),
         color: Colors.black,
       ),
-      child: ClipOval(
-        child: Image.asset(
-          'images/logo3.png',
-          fit: BoxFit.cover,
-        ),
-      ),
+      child: WidgetAvatar(urlImage: videoModel.mapUserModel['urlAvatar']),
     );
     Widget addButton = Container(
       width: 20,
