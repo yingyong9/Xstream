@@ -1,14 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tiktok/views/widget_avatar.dart';
-import 'package:flutter_tiktok/views/widget_image.dart';
 import 'package:get/get.dart';
 import 'package:tapped/tapped.dart';
 
 import 'package:flutter_tiktok/models/video_model.dart';
 import 'package:flutter_tiktok/pages/confirm_buy_product.dart';
 import 'package:flutter_tiktok/style/style.dart';
-import 'package:flutter_tiktok/utility/app_constant.dart';
 import 'package:flutter_tiktok/utility/app_controller.dart';
 import 'package:flutter_tiktok/utility/app_dialog.dart';
 import 'package:flutter_tiktok/views/widget_button.dart';
@@ -66,17 +66,17 @@ class TikTokButtonColumn extends StatelessWidget {
               ),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              _IconButton(
-                icon: IconToText(Icons.mode_comment, size: SysSize.iconBig - 4),
-                text: '4213',
-                onTap: onComment,
-              ),
-            ],
-          ),
-          displayImageProduct(appController),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     _IconButton(
+          //       icon: IconToText(Icons.mode_comment, size: SysSize.iconBig - 4),
+          //       text: '4213',
+          //       onTap: onComment,
+          //     ),
+          //   ],
+          // ),
+          displayImageProduct(appController, context: context),
           Container(
             width: SysSize.avatar,
             height: SysSize.avatar,
@@ -91,14 +91,14 @@ class TikTokButtonColumn extends StatelessWidget {
     );
   }
 
-  Widget displayImageProduct(AppController appController) {
+  Widget displayImageProduct(AppController appController, {required BuildContext context}) {
     return videoModel.urlProduct!.isEmpty
         ? const SizedBox()
         : InkWell(
             onTap: () {
               // dialogChooseAmountProduct(appController);
 
-              dialogShowUser();
+              AppDialog().dialogShowUser(videoModel: videoModel, title: 'ซื้อสินค้าที่นี่', context: context);
             },
             child: Container(
               margin: const EdgeInsets.only(right: 12),
@@ -144,59 +144,6 @@ class TikTokButtonColumn extends StatelessWidget {
               decoration: BoxDecoration(color: ColorPlate.white),
             ),
           );
-  }
-
-  void dialogShowUser() {
-    Get.dialog(AlertDialog(
-      icon: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          WidgetAvatar(urlImage: videoModel.mapUserModel['urlAvatar']),
-        ],
-      ),
-      title: WidgetText(data: videoModel.mapUserModel['name']),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            children: [
-              WidgetImage(
-                path: 'images/call.png',
-                size: 36,
-              ),
-              const SizedBox(
-                width: 16,
-              ),
-              WidgetText(data: videoModel.mapUserModel['phoneContact']),
-            ],
-          ),
-          Row(
-            children: [
-              WidgetImage(
-                path: 'images/line.png',
-                size: 36,
-              ),
-              const SizedBox(
-                width: 16,
-              ),
-              WidgetText(data: videoModel.mapUserModel['linkLine']),
-            ],
-          ),
-          Row(
-            children: [
-              WidgetImage(
-                path: 'images/messaging.png',
-                size: 36,
-              ),
-              const SizedBox(
-                width: 16,
-              ),
-              WidgetText(data: videoModel.mapUserModel['linkMessaging']),
-            ],
-          ),
-        ],
-      ),
-    ));
   }
 
   void dialogChooseAmountProduct(AppController appController) {

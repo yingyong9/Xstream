@@ -1,10 +1,13 @@
+import 'package:flutter_tiktok/models/user_model.dart';
 import 'package:flutter_tiktok/models/video_model.dart';
 import 'package:flutter_tiktok/pages/authen.dart';
+import 'package:flutter_tiktok/pages/display_profile.dart';
 import 'package:flutter_tiktok/pages/edit_profile.dart';
 import 'package:flutter_tiktok/pages/searchPage.dart';
 import 'package:flutter_tiktok/pages/userPage.dart';
 import 'package:flutter_tiktok/style/physics.dart';
 import 'package:flutter_tiktok/utility/app_controller.dart';
+import 'package:flutter_tiktok/utility/app_dialog.dart';
 import 'package:flutter_tiktok/utility/app_service.dart';
 import 'package:flutter_tiktok/views/tikTokCommentBottomSheet.dart';
 import 'package:flutter_tiktok/views/tikTokHeader.dart';
@@ -202,7 +205,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               Widget buttons = TikTokButtonColumn(
                 isFavorite: isF,
                 onAvatar: () {
-                  tkController.animateToPage(TikTokPagePositon.right);
+                  // tkController.animateToPage(TikTokPagePositon.right);
+                  // AppDialog()
+                  //     .dialogShowUser(videoModel: appController.videoModels[i], context: context);
+
+                  UserModel userModel = UserModel.fromMap(appController.videoModels[i].mapUserModel);
+
+                  Get.to( DisplayProfile(userModel: userModel,));
                 },
                 onFavorite: () {
                   setState(() {

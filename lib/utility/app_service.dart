@@ -409,4 +409,13 @@ class AppService {
           .normalSnackBar();
     });
   }
+
+  // Future<void> processLauncher({String? phoneNumber}) async {
+  //   String? urlString;
+  //   if (phoneNumber != null) {
+  //     urlString = 'tel:$phoneNumber';
+  //   }
+
+  //   final Uri uri = Uri.parse(uri)
+  // }
 }
