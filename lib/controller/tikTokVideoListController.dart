@@ -36,11 +36,11 @@ class TikTokVideoListController extends ChangeNotifier {
     if (!reload) {
       if (index.value == target) return;
     }
-    // 播放当前的，暂停其他的
+    
     var oldIndex = index.value;
     var newIndex = target;
 
-    // 暂停之前的视频
+    
     if (!(oldIndex == 0 && newIndex == 0)) {
       playerOfIndex(oldIndex)?.controller.seekTo(Duration.zero);
       // playerOfIndex(oldIndex)?.controller.addListener(_didUpdateValue);
@@ -48,14 +48,14 @@ class TikTokVideoListController extends ChangeNotifier {
       playerOfIndex(oldIndex)?.pause();
       print('暂停$oldIndex');
     }
-    // 开始播放当前的视频
+   
     playerOfIndex(newIndex)?.controller.addListener(_didUpdateValue);
     playerOfIndex(newIndex)?.showPauseIcon.addListener(_didUpdateValue);
     playerOfIndex(newIndex)?.play();
-    print('播放$newIndex');
-    // 处理预加载/释放内存
+    print('$newIndex');
+    
     for (var i = 0; i < playerList.length; i++) {
-      /// 需要释放[disposeCount]之前的视频
+     
       /// i < newIndex - disposeCount 向下滑动时释放视频
       /// i > newIndex + disposeCount 向上滑动，同时避免disposeCount设置为0时失去视频预加载功能
       if (i < newIndex - disposeCount || i > newIndex + max(disposeCount, 2)) {
@@ -65,14 +65,14 @@ class TikTokVideoListController extends ChangeNotifier {
         playerOfIndex(i)?.dispose();
         continue;
       }
-      // 需要预加载
+     
       if (i > newIndex && i < newIndex + preloadCount) {
-        print('预加载$i');
+        print('$i');
         playerOfIndex(i)?.init();
         continue;
       }
     }
-    // 快到最底部，添加更多视频
+   
     if (playerList.length - newIndex <= loadMoreCount + 1) {
       _videoProvider?.call(newIndex, playerList).then(
         (list) async {
@@ -82,7 +82,7 @@ class TikTokVideoListController extends ChangeNotifier {
       );
     }
 
-    // 完成
+    
     index.value = target;
   }
 
@@ -90,7 +90,7 @@ class TikTokVideoListController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// 获取指定index的player
+ 
   VPVideoController? playerOfIndex(int index) {
     if (index < 0 || index > playerList.length - 1) {
       return null;
@@ -98,10 +98,10 @@ class TikTokVideoListController extends ChangeNotifier {
     return playerList[index];
   }
 
-  /// 视频总数目
+
   int get videoCount => playerList.length;
 
-  /// 初始化
+  
   init({
     required PageController pageController,
     required List<VPVideoController> initialList,
@@ -119,18 +119,18 @@ class TikTokVideoListController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// 目前的视频序号
+  
   ValueNotifier<int> index = ValueNotifier<int>(0);
 
-  /// 视频列表
+ 
   List<VPVideoController> playerList = [];
 
   ///
   VPVideoController get currentPlayer => playerList[index.value];
 
-  /// 销毁全部
+ 
   void dispose() {
-    // 销毁全部
+  
     for (var player in playerList) {
       player.showPauseIcon.dispose();
       player.dispose();
@@ -143,28 +143,28 @@ class TikTokVideoListController extends ChangeNotifier {
 typedef ControllerSetter<T> = Future<void> Function(T controller);
 typedef ControllerBuilder<T> = T Function();
 
-/// 抽象类，作为视频控制器必须实现这些方法
+
 abstract class TikTokVideoController<T> {
-  /// 获取当前的控制器实例
+ 
   T? get controller;
 
-  /// 是否显示暂停按钮
+ 
   ValueNotifier<bool> get showPauseIcon;
 
-  /// 加载视频，在init后，应当开始下载视频内容
+ 
   Future<void> init({ControllerSetter<T>? afterInit});
 
-  /// 视频销毁，在dispose后，应当释放任何内存资源
+  
   Future<void> dispose();
 
-  /// 播放
+ 
   Future<void> play();
 
-  /// 暂停
+ 
   Future<void> pause({bool showPauseIcon: false});
 }
 
-/// 异步方法并发锁
+
 Completer<void>? _syncLock;
 
 class VPVideoController extends TikTokVideoController<VideoPlayerController> {
@@ -196,17 +196,17 @@ class VPVideoController extends TikTokVideoController<VideoPlayerController> {
 
   Completer<void>? _disposeLock;
 
-  /// 防止异步方法并发
+  
   Future<void> _syncCall(Future Function()? fn) async {
-    // 设置同步等待
+   
     var lastCompleter = _syncLock;
     var completer = Completer<void>();
     _syncLock = completer;
-    // 等待其他同步任务完成
+   
     await lastCompleter?.future;
-    // 主任务
+    
     await fn?.call();
-    // 结束
+   
     completer.complete();
   }
 

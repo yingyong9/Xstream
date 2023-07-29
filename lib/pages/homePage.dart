@@ -121,8 +121,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       //   currentPage = MsgPage();
       //   break;
       case TikTokPageTag.me:
-        // currentPage = UserPage(isSelfPage: true);
-        currentPage = EditProfile();
+        currentPage = UserPage(isSelfPage: true);
+        // currentPage = EditProfile();
         break;
     }
     double a = MediaQuery.of(context).size.aspectRatio;

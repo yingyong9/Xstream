@@ -50,7 +50,7 @@ class _SearchPageState extends State<SearchPage> {
                       Container(
                         padding: EdgeInsets.only(left: 2, bottom: 2),
                         child: Text(
-                          '搜索内容',
+                          'Search',
                           style: StandardTextStyle.normal,
                         ),
                       )
@@ -61,7 +61,7 @@ class _SearchPageState extends State<SearchPage> {
             ),
             Tapped(
               child: Text(
-                '取消',
+                'Back',
                 style: StandardTextStyle.normal.apply(color: ColorPlate.orange),
               ),
               onTap: widget.onPop,
@@ -73,40 +73,40 @@ class _SearchPageState extends State<SearchPage> {
     Widget body = ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
-        _SearchSelectRow(),
-        _SearchSelectRow(),
-        _SearchSelectRow(),
-        _SearchSelectRow(),
-        _SearchSelectRow(),
-        Opacity(
-          opacity: 0.6,
-          child: Container(
-            height: 46,
-            child: Center(child: Text('全部搜索记录')),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-          child: AspectRatio(
-            aspectRatio: 4.0,
-            child: Container(
-              decoration: BoxDecoration(
-                color: ColorPlate.darkGray,
-                border: Border.all(color: Colors.black),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                '预留轮播图',
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.1),
-                  fontSize: 18,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-            ),
-          ),
-        ),
+        // _SearchSelectRow(),
+        // _SearchSelectRow(),
+        // _SearchSelectRow(),
+        // _SearchSelectRow(),
+        // _SearchSelectRow(),
+        // Opacity(
+        //   opacity: 0.6,
+        //   child: Container(
+        //     height: 46,
+        //     child: Center(child: Text('Comment')),
+        //   ),
+        // ),
+        // Container(
+        //   margin: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        //   child: AspectRatio(
+        //     aspectRatio: 4.0,
+        //     child: Container(
+        //       decoration: BoxDecoration(
+        //         color: ColorPlate.darkGray,
+        //         border: Border.all(color: Colors.black),
+        //         borderRadius: BorderRadius.circular(8),
+        //       ),
+        //       alignment: Alignment.center,
+        //       child: Text(
+        //         'Comment',
+        //         style: TextStyle(
+        //           color: Colors.white.withOpacity(0.1),
+        //           fontSize: 18,
+        //           fontWeight: FontWeight.w900,
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
     return Scaffold(
