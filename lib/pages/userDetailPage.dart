@@ -1,7 +1,11 @@
+import 'package:flutter_tiktok/pages/edit_profile.dart';
 import 'package:flutter_tiktok/style/style.dart';
+import 'package:flutter_tiktok/utility/app_controller.dart';
 import 'package:flutter_tiktok/utility/app_service.dart';
 import 'package:flutter_tiktok/views/tilTokAppBar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tiktok/views/widget_image.dart';
+import 'package:get/get.dart';
 import 'package:tapped/tapped.dart';
 
 class UserDetailPage extends StatefulWidget {
@@ -10,100 +14,198 @@ class UserDetailPage extends StatefulWidget {
 }
 
 class _UserDetailPageState extends State<UserDetailPage> {
+  AppController appController = Get.put(AppController());
+
   @override
   Widget build(BuildContext context) {
-    Widget head = TikTokAppbar(
-      title: 'AA',
-    );
+    Widget head = Obx(() {
+      return TikTokAppbar(
+        title: appController.currentUserModels.last.name,
+      );
+    });
     var userHead = Row(
       children: <Widget>[
         Expanded(
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             child: Text(
-              '个人信息',
+              'ข้อมูลส่วนตัว',
               style: StandardTextStyle.smallWithOpacity,
             ),
           ),
         ),
-        Container(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          child: Text(
-            '修改',
-            style: StandardTextStyle.smallWithOpacity.apply(
-              color: ColorPlate.orange,
+        InkWell(
+          onTap: () {
+            Get.to(EditProfile());
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: Text(
+              'แก้ไข',
+              style: StandardTextStyle.smallWithOpacity.apply(
+                color: ColorPlate.orange,
+              ),
             ),
           ),
         )
       ],
     );
-    Widget body = ListView(
-      padding: EdgeInsets.only(
-        bottom: 80 + MediaQuery.of(context).padding.bottom,
-      ),
-      children: <Widget>[
-        userHead,
-        _UserInfoRow(
-          title: '昵称',
-          rightIcon: Text(
-            '朱二蛋的枯燥生活',
-            style: StandardTextStyle.small,
-          ),
+    Widget body = Obx(() {
+      return ListView(
+        padding: EdgeInsets.only(
+          bottom: 80 + MediaQuery.of(context).padding.bottom,
         ),
-        _UserInfoRow(
-          title: '头像',
-          rightIcon: Text(
-            '上传',
-            style: StandardTextStyle.small,
+        children: <Widget>[
+          userHead,
+          _UserInfoRow(
+            title: 'ชื่อ',
+            rightIcon: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  appController.currentUserModels.last.name,
+                  style: StandardTextStyle.small,
+                ),
+                Icon(Icons.arrow_forward_ios),
+              ],
+            ),
+            onTap: () {},
           ),
-        ),
-        _UserInfoRow(
-          title: '手机绑定',
-          rightIcon: Text(
-            '186****7767',
-            style: StandardTextStyle.small,
+          _UserInfoRow(
+            title: 'Email',
+            rightIcon: Row(
+              children: [
+                Text(
+                  '',
+                  style: StandardTextStyle.small,
+                ),
+                Icon(Icons.arrow_forward_ios),
+              ],
+            ),
           ),
-        ),
-        _UserInfoRow(
-          title: '地址',
-          rightIcon: Text(
-            '深圳市南山区南海大道',
-            style: StandardTextStyle.small,
+          _UserInfoRow(
+            icon: WidgetImage(
+              path: 'images/call.png',
+              size: 24,
+            ),
+            rightIcon: Row(
+              children: [
+                Text(
+                  appController.currentUserModels.last.phoneContact ?? '',
+                  style: StandardTextStyle.small,
+                ),
+                Icon(Icons.arrow_forward_ios),
+              ],
+            ),
           ),
-        ),
-        _UserInfoRow(
-          title: '年龄',
-          rightIcon: Text(
-            '18',
-            style: StandardTextStyle.small,
+          _UserInfoRow(
+            icon: WidgetImage(
+              path: 'images/line.png',
+              size: 24,
+            ),
+            rightIcon: Row(
+              children: [
+                Text(
+                  appController.currentUserModels.last.linkLine ?? '',
+                  style: StandardTextStyle.small,
+                ),
+                Icon(Icons.arrow_forward_ios),
+              ],
+            ),
           ),
-        ),
-        _UserInfoRow(
-          title: '用户性别',
-          rightIcon: Text(
-            '男',
-            style: StandardTextStyle.small,
+          _UserInfoRow(
+            icon: WidgetImage(
+              path: 'images/tiktok.png',
+              size: 24,
+            ),
+            rightIcon: Row(
+              children: [
+                Text(
+                  appController.currentUserModels.last.linktiktok ?? '',
+                  style: StandardTextStyle.small,
+                ),
+                Icon(Icons.arrow_forward_ios),
+              ],
+            ),
           ),
-        ),
-        _UserInfoRow(
-          title: '职业',
-          rightIcon: Text(
-            '总裁',
-            style: StandardTextStyle.small,
+          _UserInfoRow(
+            icon: WidgetImage(
+              path: 'images/facebook.png',
+              size: 24,
+            ),
+            rightIcon: Row(
+              children: [
+                Text(
+                  '',
+                  style: StandardTextStyle.small,
+                ),
+                Icon(Icons.arrow_forward_ios),
+              ],
+            ),
           ),
-        ),
-        _UserInfoRow(
-          title: 'Sign Out',
-          rightIcon: Text(
-            'ออกจากระบบ',
-            style: StandardTextStyle.small,
+          _UserInfoRow(
+            icon: WidgetImage(
+              path: 'images/messaging.png',
+              size: 24,
+            ),
+            rightIcon: Row(
+              children: [
+                Text(
+                  '',
+                  style: StandardTextStyle.small,
+                ),
+                Icon(Icons.arrow_forward_ios),
+              ],
+            ),
           ),
-          onTap: () {
-            AppService().processSignOut();
-          },
-        ),
-      ],
-    );
+          _UserInfoRow(
+            icon: WidgetImage(
+              path: 'images/lazada.png',
+              size: 24,
+            ),
+            rightIcon: Row(
+              children: [
+                Text(
+                  '',
+                  style: StandardTextStyle.small,
+                ),
+                Icon(Icons.arrow_forward_ios),
+              ],
+            ),
+          ),
+          _UserInfoRow(
+            icon: WidgetImage(
+              path: 'images/shopee.png',
+              size: 24,
+            ),
+            rightIcon: Row(
+              children: [
+                Text(
+                  '',
+                  style: StandardTextStyle.small,
+                ),
+                Icon(Icons.arrow_forward_ios),
+              ],
+            ),
+          ),
+          _UserInfoRow(
+            title: 'Sign Out',
+            rightIcon: Row(
+              children: [
+                Text(
+                  'ออกจากระบบ',
+                  style: StandardTextStyle.big,
+                ),
+                Icon(Icons.arrow_forward_ios),
+              ],
+            ),
+            onTap: () {
+              AppService().processSignOut();
+            },
+          ),
+        ],
+      );
+    });
     body = Center(
       child: Container(
         decoration: BoxDecoration(
@@ -143,8 +245,8 @@ class _UserInfoRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget iconImg = Container(
-      height: 24,
-      width: 24,
+      height: 30,
+      width: 30,
       child: icon,
     );
 
@@ -159,14 +261,16 @@ class _UserInfoRow extends StatelessWidget {
       ),
       child: Row(
         children: <Widget>[
-          icon != null ? iconImg : Container(),
+          icon != null ? iconImg : const SizedBox(),
           Expanded(
             child: Container(
               padding: EdgeInsets.only(left: 12),
-              child: Text(
-                title!,
-                style: TextStyle(fontSize: 14),
-              ),
+              child: title == null
+                  ? const SizedBox()
+                  : Text(
+                      title!,
+                      style: TextStyle(fontSize: 14),
+                    ),
             ),
           ),
           Opacity(

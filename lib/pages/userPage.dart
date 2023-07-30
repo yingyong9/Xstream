@@ -1,3 +1,4 @@
+import 'package:flutter_tiktok/models/user_model.dart';
 import 'package:flutter_tiktok/pages/edit_profile.dart';
 import 'package:flutter_tiktok/pages/userDetailPage.dart';
 import 'package:flutter_tiktok/style/style.dart';
@@ -38,7 +39,8 @@ class _UserPageState extends State<UserPage> {
         children: <Widget>[
           Tapped(
             child: _UserRightButton(
-              title: widget.isSelfPage ? 'แก้ไขโปรไฟร์' : 'BB',
+              // title: widget.isSelfPage ? 'แก้ไขโปรไฟร์' : 'เจ้าของวีดีโอ',
+              title: '',
             ),
             onTap: () {
               Get.to(EditProfile());
@@ -77,102 +79,116 @@ class _UserPageState extends State<UserPage> {
                       fit: BoxFit.cover,
                     ),
                   )
-                : ClipOval(
-                    child: Image.network(
-                      appController.currentUserModels.last.urlAvatar,
-                      fit: BoxFit.cover,
-                    ),
-                  );
+                : widget.isSelfPage
+                    ? ClipOval(
+                        child: Image.network(
+                          appController.currentUserModels.last.urlAvatar,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : ClipOval(
+                        child: Image.network(
+                          appController
+                              .videoModels[appController.indexVideo.value]
+                              .mapUserModel['urlAvatar'],
+                          fit: BoxFit.cover,
+                        ),
+                      );
           }),
         ),
       ),
     );
     Widget body = Obx(() {
-      return appController.currentUserModels.isEmpty ? const SizedBox() : ListView(
-        physics: BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
-        children: <Widget>[
-          Container(height: 20),
-          Stack(
-            alignment: Alignment.bottomLeft,
-            children: <Widget>[likeButton, avatar],
-          ),
-          Container(
-            color: ColorPlate.back1,
-            child: Column(
+      print('##29july indexVideo ---> ${appController.indexVideo}');
+      return appController.currentUserModels.isEmpty
+          ? const SizedBox()
+          : ListView(
+              physics: BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
               children: <Widget>[
+                Container(height: 20),
+                Stack(
+                  alignment: Alignment.bottomLeft,
+                  children: <Widget>[likeButton, avatar],
+                ),
                 Container(
-                  padding: EdgeInsets.only(left: 18),
                   color: ColorPlate.back1,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        '@${appController.currentUserModels.last.name}',
-                        style: StandardTextStyle.big,
+                      Container(
+                        padding: EdgeInsets.only(left: 18),
+                        color: ColorPlate.back1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              widget.isSelfPage
+                                  ? '@${appController.currentUserModels.last.name}'
+                                  : '@${appController.videoModels[appController.indexVideo.value].mapUserModel['name']}',
+                              style: StandardTextStyle.big,
+                            ),
+                            Container(height: 8),
+                            // Text(
+                            //   '朴实无华，且枯燥',
+                            //   style: StandardTextStyle.smallWithOpacity.apply(
+                            //     color: Colors.white,
+                            //   ),
+                            // ),
+                            Container(height: 10),
+                            Row(
+                              children: <Widget>[
+                                _UserTag(tag: 'สินค้าของคุณ'),
+                                _UserTag(tag: 'เพิ่มเพื่อน'),
+                                _UserTag(tag: 'คำสั่งซื้อของคุณ'),
+                                // _UserTag(tag: '狮子座'),
+                              ],
+                            ),
+                            Container(height: 10),
+                          ],
+                        ),
                       ),
-                      Container(height: 8),
-                      // Text(
-                      //   '朴实无华，且枯燥',
-                      //   style: StandardTextStyle.smallWithOpacity.apply(
-                      //     color: Colors.white,
-                      //   ),
-                      // ),
-                      Container(height: 10),
-                      Row(
-                        children: <Widget>[
-                          _UserTag(tag: 'สินค้าของคุณ'),
-                          _UserTag(tag: 'เพิ่มเพื่อน'),
-                          _UserTag(tag: 'คำสั่งซื้อของคุณ'),
-                          // _UserTag(tag: '狮子座'),
-                        ],
+                      Container(
+                        color: ColorPlate.back1,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            TextGroup('356', 'กำลังติดตาม'),
+                            TextGroup('145', 'ผู้ติดตาม'),
+                            TextGroup('1423', 'ถูกใจ'),
+                          ],
+                        ),
                       ),
-                      Container(height: 10),
+                      Container(
+                        height: 10,
+                        margin: EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Colors.white.withOpacity(0.1),
+                            ),
+                          ),
+                        ),
+                      ),
+                      _UserVideoTable(),
                     ],
                   ),
                 ),
-                Container(
-                  color: ColorPlate.back1,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 2,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      TextGroup('356', 'กำลังติดตาม'),
-                      TextGroup('145', 'ผู้ติดตาม'),
-                      TextGroup('1423', 'ถูกใจ'),
-                    ],
-                  ),
-                ),
-                Container(
-                  height: 10,
-                  margin: EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Colors.white.withOpacity(0.1),
-                      ),
-                    ),
-                  ),
-                ),
-                _UserVideoTable(),
               ],
-            ),
-          ),
-        ],
-      );
+            );
     });
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           colors: <Color>[
-            Colors.orange,
-            Colors.red,
+            ColorPlate.back1,
+            ColorPlate.back1,
           ],
         ),
       ),
@@ -244,10 +260,10 @@ class _UserRightButton extends StatelessWidget {
         title,
         style: TextStyle(color: ColorPlate.orange),
       ),
-      decoration: BoxDecoration(
-        border: Border.all(color: ColorPlate.orange),
-        borderRadius: BorderRadius.circular(4),
-      ),
+      // decoration: BoxDecoration(
+      //   border: Border.all(color: ColorPlate.orange),
+      //   borderRadius: BorderRadius.circular(4),
+      // ),
     );
   }
 }

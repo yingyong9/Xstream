@@ -9,6 +9,7 @@ class UserModel {
   final String? phoneContact;
   final String? linkLine;
   final String? linkMessaging;
+  final String? linktiktok;
   UserModel({
     required this.name,
     required this.uid,
@@ -17,6 +18,7 @@ class UserModel {
     this.phoneContact,
     this.linkLine,
     this.linkMessaging,
+    this.linktiktok,
   });
 
   Map<String, dynamic> toMap() {
@@ -28,6 +30,7 @@ class UserModel {
       'phoneContact': phoneContact,
       'linkLine': linkLine,
       'linkMessaging': linkMessaging,
+      'linktiktok': linktiktok,
     };
   }
 
@@ -40,6 +43,7 @@ class UserModel {
       phoneContact: map['phoneContact'] ?? '',
       linkLine: map['linkLine'] ?? '',
       linkMessaging: map['linkMessaging']  ?? '',
+      linktiktok: map['linktiktok'] ?? '',
     );
   }
 

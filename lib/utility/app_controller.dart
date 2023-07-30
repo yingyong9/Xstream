@@ -15,15 +15,13 @@ class AppController extends GetxController {
   RxList<File> productFiles = <File>[].obs;
   RxList<String> productNameFiles = <String>[].obs;
   RxInt amount = 1.obs;
-
   RxList<ProvinceModel> provinceModels = <ProvinceModel>[].obs;
   RxList<ProvinceModel?> chooseProvinceModels = <ProvinceModel?>[null].obs;
-
   RxList<AmphureModel> amphureModels = <AmphureModel>[].obs;
   RxList<AmphureModel?> chooseAmphureModels = <AmphureModel?>[null].obs;
-
   RxList<DistriceModel> districeModels = <DistriceModel>[].obs;
   RxList<DistriceModel?> chooseDistriceModels = <DistriceModel?>[null].obs;
-
   RxBool change = false.obs;
+
+  RxInt indexVideo = 0.obs;
 }
