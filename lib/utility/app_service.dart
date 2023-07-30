@@ -403,6 +403,7 @@ class AppService {
         .update(map)
         .then((value) {
       findCurrentUserModel();
+      Get.back();
       AppSnackBar(
               title: 'แก้ไขโปรไฟล์ สำเร็จ',
               message: 'แก้ไขโปรไฟล์ สำเร็จ ขอบคุณครับ')

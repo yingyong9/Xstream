@@ -2,9 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pin_code_widget/flutter_pin_code_widget.dart';
 import 'package:flutter_tiktok/models/otp_require_thaibulk.dart';
+import 'package:flutter_tiktok/style/style.dart';
 import 'package:flutter_tiktok/utility/app_service.dart';
 import 'package:flutter_tiktok/views/widget_back_button.dart';
 import 'package:flutter_tiktok/views/widget_image.dart';
+import 'package:flutter_tiktok/views/widget_text.dart';
+import 'package:otp_text_field/otp_text_field.dart';
+import 'package:otp_text_field/style.dart';
 
 class CheckPincode extends StatefulWidget {
   const CheckPincode({
@@ -20,6 +24,8 @@ class CheckPincode extends StatefulWidget {
 
 class _CheckPincodeState extends State<CheckPincode> {
   OtpRequireThaibulk? otpRequireThaibulk;
+
+  OtpFieldController otpFieldController = OtpFieldController();
 
   @override
   void initState() {
@@ -41,10 +47,18 @@ class _CheckPincodeState extends State<CheckPincode> {
           children: [
             Column(
               children: [
-                SizedBox(
-                  width: boxConstraints.maxWidth,
-                  height: boxConstraints.maxHeight * 0.4,
-                  child: WidgetImage(),
+                displayLogo(boxConstraints),
+                displayTitle(),
+                OTPTextField(
+                  controller: otpFieldController,
+                  fieldStyle: FieldStyle.box,
+                  length: 6,
+                  width: 250,
+                  style: TextStyle(
+                    fontSize: 24,
+                  ),
+                  otpFieldStyle:
+                      OtpFieldStyle(backgroundColor: ColorPlate.gray),
                 ),
                 SizedBox(
                   height: boxConstraints.maxHeight * 0.6,
@@ -56,6 +70,8 @@ class _CheckPincodeState extends State<CheckPincode> {
                     },
                     onChangedPin: (pin) {
                       print('pin ---> $pin');
+                      String string = pin.substring(pin.length - 1);
+                      otpFieldController.setValue(string, pin.length - 1);
                       if (pin.length == 6) {
                         print('Check');
                         AppService().verifyOTPThaibulk(
@@ -68,6 +84,7 @@ class _CheckPincodeState extends State<CheckPincode> {
                     onChangedPinLength: (length) {
                       print('length --> $length');
                     },
+                    filledIndicatorColor: ColorPlate.back1,
                   ),
                 ),
               ],
@@ -76,6 +93,27 @@ class _CheckPincodeState extends State<CheckPincode> {
           ],
         );
       })),
+    );
+  }
+
+  Row displayTitle() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: 250,
+          margin: const EdgeInsets.only(bottom: 16),
+          child: WidgetText(data: 'กรอกรหัส OTP ที่ส่ง'),
+        ),
+      ],
+    );
+  }
+
+  SizedBox displayLogo(BoxConstraints boxConstraints) {
+    return SizedBox(
+      width: boxConstraints.maxWidth,
+      height: boxConstraints.maxHeight * 0.25,
+      child: WidgetImage(),
     );
   }
 }

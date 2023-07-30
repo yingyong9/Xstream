@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tiktok/pages/check_pincode.dart';
+import 'package:flutter_tiktok/style/style.dart';
 import 'package:flutter_tiktok/utility/app_snackbar.dart';
 import 'package:flutter_tiktok/views/widget_back_button.dart';
 import 'package:flutter_tiktok/views/widget_button.dart';
 import 'package:flutter_tiktok/views/widget_form.dart';
 import 'package:flutter_tiktok/views/widget_image.dart';
+import 'package:flutter_tiktok/views/widget_text.dart';
 import 'package:get/get.dart';
 
 class Authen extends StatefulWidget {
@@ -36,6 +38,13 @@ class _AuthenState extends State<Authen> {
                     ),
                     WidgetImage(
                       size: 280,
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(width: 250,margin: const EdgeInsets.only(bottom: 16),
+                          child: WidgetText(data: 'กรอกเบอร์โทรศัพย์มือถือ'),
+                        ),
+                      ],
                     ),
                     displayForm(),
                     displayButton(),
@@ -73,8 +82,8 @@ class _AuthenState extends State<Authen> {
         Container(
           width: 250,
           margin: const EdgeInsets.only(top: 30),
-          child: WidgetButton(
-            label: 'Go',
+          child: WidgetButton(color: ColorPlate.red,
+            label: 'ถัดไป',
             pressFunc: () {
               if (textEditingController.text.isEmpty) {
                 AppSnackBar(

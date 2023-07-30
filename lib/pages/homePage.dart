@@ -165,7 +165,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       canPop: true,
       onPop: () {
         tkController.animateToMiddle();
-      },
+      }, 
     );
     var searchPage = SearchPage(
       onPop: tkController.animateToMiddle,
@@ -201,6 +201,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               bool isF = SafeMap(favoriteMap)[i].boolean;
               var player = _videoListController.playerOfIndex(i)!;
               var data = player.videoInfo!;
+
+              
 
               Widget buttons = TikTokButtonColumn(
                 isFavorite: isF,
@@ -268,6 +270,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 video: currentVideo,
               );
               return currentVideo;
+            },
+            onPageChanged: (value) {
+              appController.indexVideo.value = value;
             },
           ),
           currentPage ?? Container(),

@@ -70,7 +70,8 @@ class ColorPlate {
 
   
   static const Color back1 = const Color(0xff1D1F22);
-
-  
   static const Color back2 = const Color(0xff121314);
+
+  static const Color light1 = const Color(0xffffcda5);
+  static const Color dark1 = const Color(0xffee4d5f);
 }
