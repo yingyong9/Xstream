@@ -39,7 +39,8 @@ class _UserPageState extends State<UserPage> {
         children: <Widget>[
           Tapped(
             child: _UserRightButton(
-              title: widget.isSelfPage ? 'แก้ไขโปรไฟร์' : 'เจ้าของวีดีโอ',
+              // title: widget.isSelfPage ? 'แก้ไขโปรไฟร์' : 'เจ้าของวีดีโอ',
+              title: '',
             ),
             onTap: () {
               Get.to(EditProfile());
@@ -186,8 +187,8 @@ class _UserPageState extends State<UserPage> {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           colors: <Color>[
-            ColorPlate.light1,
-            ColorPlate.dark1,
+            ColorPlate.back1,
+            ColorPlate.back1,
           ],
         ),
       ),
@@ -259,10 +260,10 @@ class _UserRightButton extends StatelessWidget {
         title,
         style: TextStyle(color: ColorPlate.orange),
       ),
-      decoration: BoxDecoration(
-        border: Border.all(color: ColorPlate.orange),
-        borderRadius: BorderRadius.circular(4),
-      ),
+      // decoration: BoxDecoration(
+      //   border: Border.all(color: ColorPlate.orange),
+      //   borderRadius: BorderRadius.circular(4),
+      // ),
     );
   }
 }
