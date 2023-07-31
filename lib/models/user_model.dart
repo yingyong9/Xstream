@@ -10,6 +10,13 @@ class UserModel {
   final String? linkLine;
   final String? linkMessaging;
   final String? linktiktok;
+  final String? email;
+
+  final String? facebook;
+  final String? lazada;
+  final String? shoppee;
+  final String? intagram;
+  final String? twitter;
   UserModel({
     required this.name,
     required this.uid,
@@ -19,6 +26,12 @@ class UserModel {
     this.linkLine,
     this.linkMessaging,
     this.linktiktok,
+    this.email,
+    this.facebook,
+    this.lazada,
+    this.shoppee,
+    this.intagram,
+    this.twitter,
   });
 
   Map<String, dynamic> toMap() {
@@ -31,6 +44,12 @@ class UserModel {
       'linkLine': linkLine,
       'linkMessaging': linkMessaging,
       'linktiktok': linktiktok,
+      'email': email,
+      'facebook': facebook,
+      'lazada': lazada,
+      'shoppee': shoppee,
+      'intagram': intagram,
+      'twitter': twitter,
     };
   }
 
@@ -42,8 +61,14 @@ class UserModel {
       phone: (map['phone'] ?? '') as String,
       phoneContact: map['phoneContact'] ?? '',
       linkLine: map['linkLine'] ?? '',
-      linkMessaging: map['linkMessaging']  ?? '',
+      linkMessaging: map['linkMessaging'] ?? '',
       linktiktok: map['linktiktok'] ?? '',
+      email: map['email'] ?? '',
+      facebook: map['facebook'] ?? '',
+      lazada: map['lazada'] ?? '',
+      shoppee: map['shoppee'] ?? '',
+      intagram: map['intagram'] ?? '',
+      twitter: map['twitter'] ?? '',
     );
   }
 

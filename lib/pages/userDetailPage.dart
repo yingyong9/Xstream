@@ -1,3 +1,4 @@
+import 'package:flutter_tiktok/pages/easy_edit_profile.dart';
 import 'package:flutter_tiktok/pages/edit_profile.dart';
 import 'package:flutter_tiktok/style/style.dart';
 import 'package:flutter_tiktok/utility/app_controller.dart';
@@ -69,19 +70,32 @@ class _UserDetailPageState extends State<UserDetailPage> {
                 Icon(Icons.arrow_forward_ios),
               ],
             ),
-            onTap: () {},
+            onTap: () {
+              Get.to(EasyEditProfile(
+                title: 'ชื่อ',
+                text: appController.currentUserModels.last.name,
+                keyMap: 'name',
+              ));
+            },
           ),
           _UserInfoRow(
             title: 'Email',
             rightIcon: Row(
               children: [
                 Text(
-                  '',
+                  appController.currentUserModels.last.email!,
                   style: StandardTextStyle.small,
                 ),
                 Icon(Icons.arrow_forward_ios),
               ],
             ),
+            onTap: () {
+              Get.to(EasyEditProfile(
+                title: 'Email',
+                text: appController.currentUserModels.last.email ?? '',
+                keyMap: 'email',
+              ));
+            },
           ),
           _UserInfoRow(
             icon: WidgetImage(
@@ -97,6 +111,13 @@ class _UserDetailPageState extends State<UserDetailPage> {
                 Icon(Icons.arrow_forward_ios),
               ],
             ),
+            onTap: () {
+              Get.to(EasyEditProfile(
+                title: 'เบอร์โทร',
+                text: appController.currentUserModels.last.phoneContact!,
+                keyMap: 'phoneContact',
+              ));
+            },
           ),
           _UserInfoRow(
             icon: WidgetImage(
@@ -112,6 +133,13 @@ class _UserDetailPageState extends State<UserDetailPage> {
                 Icon(Icons.arrow_forward_ios),
               ],
             ),
+            onTap: () {
+              Get.to(EasyEditProfile(
+                title: 'ID Line',
+                text: appController.currentUserModels.last.linkLine!,
+                keyMap: 'linkLine',
+              ));
+            },
           ),
           _UserInfoRow(
             icon: WidgetImage(
@@ -127,6 +155,13 @@ class _UserDetailPageState extends State<UserDetailPage> {
                 Icon(Icons.arrow_forward_ios),
               ],
             ),
+            onTap: () {
+              Get.to(EasyEditProfile(
+                title: 'Your Tiktok',
+                text: appController.currentUserModels.last.linktiktok ?? '',
+                keyMap: 'linktiktok',
+              ));
+            },
           ),
           _UserInfoRow(
             icon: WidgetImage(
@@ -136,12 +171,19 @@ class _UserDetailPageState extends State<UserDetailPage> {
             rightIcon: Row(
               children: [
                 Text(
-                  '',
+                  appController.currentUserModels.last.facebook ?? '',
                   style: StandardTextStyle.small,
                 ),
                 Icon(Icons.arrow_forward_ios),
               ],
             ),
+            onTap: () {
+              Get.to(EasyEditProfile(
+                title: 'Your Facebook',
+                text: appController.currentUserModels.last.facebook!,
+                keyMap: 'facebook',
+              ));
+            },
           ),
           _UserInfoRow(
             icon: WidgetImage(
@@ -151,12 +193,19 @@ class _UserDetailPageState extends State<UserDetailPage> {
             rightIcon: Row(
               children: [
                 Text(
-                  '',
+                  appController.currentUserModels.last.linkMessaging ?? '',
                   style: StandardTextStyle.small,
                 ),
                 Icon(Icons.arrow_forward_ios),
               ],
             ),
+            onTap: () {
+              Get.to(EasyEditProfile(
+                title: 'Your Messaging',
+                text: appController.currentUserModels.last.linkMessaging!,
+                keyMap: 'linkMessaging',
+              ));
+            },
           ),
           _UserInfoRow(
             icon: WidgetImage(
@@ -166,12 +215,19 @@ class _UserDetailPageState extends State<UserDetailPage> {
             rightIcon: Row(
               children: [
                 Text(
-                  '',
+                  appController.currentUserModels.last.lazada ?? '',
                   style: StandardTextStyle.small,
                 ),
                 Icon(Icons.arrow_forward_ios),
               ],
             ),
+            onTap: () {
+              Get.to(EasyEditProfile(
+                title: 'Your Lazada',
+                text: appController.currentUserModels.last.lazada!,
+                keyMap: 'lazada',
+              ));
+            },
           ),
           _UserInfoRow(
             icon: WidgetImage(
@@ -181,12 +237,63 @@ class _UserDetailPageState extends State<UserDetailPage> {
             rightIcon: Row(
               children: [
                 Text(
-                  '',
+                  appController.currentUserModels.last.shoppee ?? '',
                   style: StandardTextStyle.small,
                 ),
                 Icon(Icons.arrow_forward_ios),
               ],
             ),
+            onTap: () {
+              Get.to(EasyEditProfile(
+                title: 'Your Shopee',
+                text: appController.currentUserModels.last.shoppee!,
+                keyMap: 'shoppee',
+              ));
+            },
+          ),
+          _UserInfoRow(
+            icon: WidgetImage(
+              path: 'images/intragram.png',
+              size: 24,
+            ),
+            rightIcon: Row(
+              children: [
+                Text(
+                  appController.currentUserModels.last.intagram ?? '',
+                  style: StandardTextStyle.small,
+                ),
+                Icon(Icons.arrow_forward_ios),
+              ],
+            ),
+            onTap: () {
+              Get.to(EasyEditProfile(
+                title: 'Your Intagram',
+                text: appController.currentUserModels.last.intagram!,
+                keyMap: 'intagram',
+              ));
+            },
+          ),
+          _UserInfoRow(
+            icon: WidgetImage(
+              path: 'images/twitter.png',
+              size: 24,
+            ),
+            rightIcon: Row(
+              children: [
+                Text(
+                  appController.currentUserModels.last.twitter ?? '',
+                  style: StandardTextStyle.small,
+                ),
+                Icon(Icons.arrow_forward_ios),
+              ],
+            ),
+            onTap: () {
+              Get.to(EasyEditProfile(
+                title: 'Your twitter',
+                text: appController.currentUserModels.last.twitter!,
+                keyMap: 'twitter',
+              ));
+            },
           ),
           _UserInfoRow(
             title: 'Sign Out',
