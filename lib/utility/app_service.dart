@@ -175,6 +175,7 @@ class AppService {
             } else {
               //เป็นสมาชิกแล้ว
               print('เป็นสมาชิกแล้ว');
+              
               await FirebaseAuth.instance
                   .signInWithEmailAndPassword(
                       email: 'email$phoneNumber@xstream.com',
@@ -184,61 +185,6 @@ class AppService {
               });
             }
           });
-
-          // readAllUserModel().then((value) async {
-          //   UserModel? havePhoneUserModel;
-
-          //   bool havePhone = false;
-
-          //   print(
-          //       '##13may userModels.length ---->>>${appController.userModels.length}');
-
-          //   for (var element in appController.userModels) {
-          //     if (element.phoneNumber == phoneNumber) {
-          //       havePhone = true;
-          //       havePhoneUserModel = element;
-          //     }
-          //   }
-          //   print('##13may havePhone = $havePhone');
-
-          //   if (havePhone) {
-          //     print('##13may เคยเอาเบอร์นี่ไปสมัครแล้ว');
-          //     print('##13may havePhoneModel ---> ${havePhoneUserModel!.toMap()}');
-
-          //     await FirebaseAuth.instance
-          //         .signInWithEmailAndPassword(
-          //             email: havePhoneUserModel.email!,
-          //             password: havePhoneUserModel.password!)
-          //         .then((value) {
-          //       appController.mainUid.value = value.user!.uid;
-          //       Get.offAllNamed('/commentChat');
-          //     });
-          //   } else {
-          //     print('##13may เบอร์ใหม่');
-
-          //     print('##13may ต่อไปก็ไป สมัครสมาชิกใหม่');
-
-          //     String email = 'phone$phoneNumber@realpost.com';
-          //     String password = '123456';
-
-          //     await FirebaseAuth.instance
-          //         .createUserWithEmailAndPassword(
-          //             email: email, password: password)
-          //         .then((value) {
-          //       String uidUser = value.user!.uid;
-          //       appController.mainUid.value = uidUser;
-          //       print('##13may uidUser ---> $uidUser');
-          //       Get.offAll(DisplayName(
-          //           uidLogin: uidUser,
-          //           phoneNumber: phoneNumber,
-          //           email: email,
-          //           password: password));
-          //     }).catchError((onError) {
-          //       print(
-          //           '##13may onError on create new accoount ---> ${onError.message}');
-          //     });
-          //   }
-          // });
         }
       });
     } on Exception catch (e) {
