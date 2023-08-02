@@ -1,42 +1,38 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:tapped/tapped.dart';
+
 import 'package:flutter_tiktok/models/user_model.dart';
 import 'package:flutter_tiktok/pages/edit_profile.dart';
 import 'package:flutter_tiktok/pages/userDetailPage.dart';
 import 'package:flutter_tiktok/style/style.dart';
 import 'package:flutter_tiktok/utility/app_controller.dart';
-import 'package:flutter_tiktok/utility/app_service.dart';
 import 'package:flutter_tiktok/views/topToolRow.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_tiktok/views/user_video_table.dart';
-import 'package:get/get.dart';
-import 'package:tapped/tapped.dart';
 
-class UserPage extends StatefulWidget {
-  final bool canPop;
+class DisplayPost extends StatefulWidget {
+  final bool? canPop;
   final bool isSelfPage;
   final Function? onPop;
   final Function? onSwitch;
 
-  const UserPage({
+  final UserModel postUserModel;
+
+  const DisplayPost({
     Key? key,
-    this.canPop: false,
-    this.onPop,
+    this.canPop,
     required this.isSelfPage,
+    this.onPop,
     this.onSwitch,
+    required this.postUserModel,
   }) : super(key: key);
 
   @override
-  _UserPageState createState() => _UserPageState();
+  _DisplayPostState createState() => _DisplayPostState();
 }
 
-class _UserPageState extends State<UserPage> {
+class _DisplayPostState extends State<DisplayPost> {
   AppController appController = Get.put(AppController());
-
-  @override
-  void initState() {
-    super.initState();
-    AppService()
-        .findUrlImageVideo(uid: appController.currentUserModels.last.uid);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,40 +74,16 @@ class _UserPageState extends State<UserPage> {
               width: 1,
             ),
           ),
-          child: Obx(() {
-            print(
-                '##18july currentUserModel ---> ${appController.currentUserModels.length}');
-            return appController.currentUserModels.isEmpty
-                ? ClipOval(
-                    child: Image.asset(
-                      'images/logo3.png',
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                : widget.isSelfPage
-                    ? ClipOval(
-                        child: Image.network(
-                          appController.currentUserModels.last.urlAvatar,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    : ClipOval(
-                        child: Image.network(
-                          appController
-                              .videoModels[appController.indexVideo.value]
-                              .mapUserModel['urlAvatar'],
-                          fit: BoxFit.cover,
-                        ),
-                      );
-          }),
+          child: ClipOval(
+            child: Image.network(
+              widget.postUserModel.urlAvatar,
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
       ),
     );
-    Widget body = Obx(() {
-      print('##2aug postVideomodel ---> ${appController.postVideoModels.length}');
-      return appController.currentUserModels.isEmpty
-          ? const SizedBox()
-          : ListView(
+    Widget body = ListView(
               physics: BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics(),
               ),
@@ -132,9 +104,7 @@ class _UserPageState extends State<UserPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              widget.isSelfPage
-                                  ? '@${appController.currentUserModels.last.name}'
-                                  : '@${appController.videoModels[appController.indexVideo.value].mapUserModel['name']}',
+                             '@${widget.postUserModel.name}',
                               style: StandardTextStyle.big,
                             ),
                             Container(height: 8),
@@ -184,63 +154,64 @@ class _UserPageState extends State<UserPage> {
                           ),
                         ),
                       ),
-                      UserVideoTable(uid: appController.currentUserModels.last.uid,),
+                      _UserVideoTable(),
                     ],
                   ),
                 ),
               ],
             );
-    });
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          colors: <Color>[
-            ColorPlate.back1,
-            ColorPlate.back1,
-          ],
-        ),
-      ),
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(top: 400),
-            height: double.infinity,
-            width: double.infinity,
-            color: ColorPlate.back1,
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            colors: <Color>[
+              ColorPlate.back1,
+              ColorPlate.back1,
+            ],
           ),
-          body,
-          Container(
-            margin: EdgeInsets.only(top: 20),
-            height: 62,
-            child: TopToolRow(
-              canPop: widget.canPop,
-              onPop: widget.onPop,
-              right: Tapped(
-                child: Container(
-                  width: 30,
-                  height: 30,
-                  margin: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.36),
-                    borderRadius: BorderRadius.circular(15),
+        ),
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(top: 400),
+              height: double.infinity,
+              width: double.infinity,
+              color: ColorPlate.back1,
+            ),
+            body,
+            Container(
+              margin: EdgeInsets.only(top: 20),
+              height: 62,
+              child: TopToolRow(
+                canPop: widget.canPop,
+                onPop: widget.onPop,
+                right: Tapped(
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    margin: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.36),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    alignment: Alignment.center,
+                    child: Icon(
+                      Icons.more_horiz,
+                      size: 24,
+                    ),
                   ),
-                  alignment: Alignment.center,
-                  child: Icon(
-                    Icons.more_horiz,
-                    size: 24,
-                  ),
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (ctx) => UserDetailPage(),
+                    ));
+                  },
                 ),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (ctx) => UserDetailPage(),
-                  ));
-                },
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

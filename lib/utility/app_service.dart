@@ -175,7 +175,7 @@ class AppService {
             } else {
               //เป็นสมาชิกแล้ว
               print('เป็นสมาชิกแล้ว');
-              
+
               await FirebaseAuth.instance
                   .signInWithEmailAndPassword(
                       email: 'email$phoneNumber@xstream.com',
@@ -357,12 +357,18 @@ class AppService {
     });
   }
 
-  // Future<void> processLauncher({String? phoneNumber}) async {
-  //   String? urlString;
-  //   if (phoneNumber != null) {
-  //     urlString = 'tel:$phoneNumber';
-  //   }
+  Future<void> findUrlImageVideo({required String uid}) async {
+    FirebaseFirestore.instance.collection('video').get().then((value) {
+      if (appController.postVideoModels.isNotEmpty) {
+        appController.postVideoModels.clear();
+      }
 
-  //   final Uri uri = Uri.parse(uri)
-  // }
+      for (var element in value.docs) {
+        VideoModel videoModel = VideoModel.fromMap(element.data());
+        if (uid == videoModel.mapUserModel['uid']) {
+          appController.postVideoModels.add(videoModel);
+        }
+      }
+    });
+  }
 }

@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_tiktok/views/non_image.dart';
 
 class WidgetImageNetwork extends StatelessWidget {
   const WidgetImageNetwork({
@@ -20,6 +21,7 @@ class WidgetImageNetwork extends StatelessWidget {
       width: size,
       height: size,
       fit: boxFit,
+      errorBuilder: (context, error, stackTrace) => NonImage(),
     );
   }
 }
