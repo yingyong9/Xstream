@@ -51,20 +51,30 @@ class _UserVideoTableState extends State<UserVideoTable> {
                   ],
                 ),
               ),
-              Obx(() {
-                return appController.postVideoModels.isEmpty
-                    ? const SizedBox()
-                    : GridView.builder(
-                        physics: const ScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: appController.postVideoModels.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3, childAspectRatio: 3/4, mainAxisSpacing: 4, crossAxisSpacing: 4),
-                        itemBuilder: (context, index) => WidgetImageNetwork(
-                            urlImage:
-                                appController.postVideoModels[index].image, boxFit: BoxFit.cover,),
-                      );
-              }),
+              GridView.builder(
+                physics: const ScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: appController.postVideoModels.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 3 / 4,
+                  mainAxisSpacing: 4,
+                  crossAxisSpacing: 4,
+                ),
+                itemBuilder: (context, index) => WidgetImageNetwork(
+                  urlImage: appController.postVideoModels[index].image,
+                  boxFit: BoxFit.cover,
+                  tapFunc: () {
+                    print(
+                        'you tap at ${appController.postVideoModels[index].toMap()}');
+                  },
+                ),
+              ),
+              // GridView.builder(
+              //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              //       crossAxisCount: 3),itemCount: 12,physics: const ScrollPhysics(),shrinkWrap: true,
+              //   itemBuilder: (context, index) => WidgetText(data: '${appController.postVideoModels.length}'),
+              // )
             ],
           );
         });
