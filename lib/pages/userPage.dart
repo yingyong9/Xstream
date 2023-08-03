@@ -34,8 +34,13 @@ class _UserPageState extends State<UserPage> {
   @override
   void initState() {
     super.initState();
-    AppService()
+
+    AppService().findCurrentUserModel().then((value) {
+       AppService()
         .findUrlImageVideo(uid: appController.currentUserModels.last.uid);
+    });
+
+   
   }
 
   @override
