@@ -37,7 +37,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
         ),
         InkWell(
           onTap: () {
-            Get.to(EditProfile());
+            // Get.to(EditProfile());
           },
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),

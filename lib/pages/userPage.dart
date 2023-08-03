@@ -1,4 +1,3 @@
-import 'package:flutter_tiktok/models/user_model.dart';
 import 'package:flutter_tiktok/pages/edit_profile.dart';
 import 'package:flutter_tiktok/pages/userDetailPage.dart';
 import 'package:flutter_tiktok/style/style.dart';
@@ -34,13 +33,8 @@ class _UserPageState extends State<UserPage> {
   @override
   void initState() {
     super.initState();
-
-    AppService().findCurrentUserModel().then((value) {
-       AppService()
+    AppService()
         .findUrlImageVideo(uid: appController.currentUserModels.last.uid);
-    });
-
-   
   }
 
   @override
@@ -65,18 +59,18 @@ class _UserPageState extends State<UserPage> {
     );
     Widget avatar = Container(
       height: 120 + MediaQuery.of(context).padding.top,
-      padding: EdgeInsets.only(left: 18),
-      alignment: Alignment.bottomLeft,
+      // padding: EdgeInsets.only(left: 18),
+      alignment: Alignment.center,
       child: OverflowBox(
-        alignment: Alignment.bottomLeft,
+        // alignment: Alignment.bottomLeft,
         minHeight: 20,
         maxHeight: 300,
         child: Container(
-          height: 74,
-          width: 74,
+          height: 104,
+          width: 104,
           margin: EdgeInsets.only(bottom: 12),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(44),
+            borderRadius: BorderRadius.circular(74),
             color: Colors.black,
             border: Border.all(
               color: Colors.white,
@@ -113,7 +107,8 @@ class _UserPageState extends State<UserPage> {
       ),
     );
     Widget body = Obx(() {
-      print('##2aug postVideomodel ---> ${appController.postVideoModels.length}');
+      print(
+          '##2aug postVideomodel ---> ${appController.postVideoModels.length}');
       return appController.currentUserModels.isEmpty
           ? const SizedBox()
           : ListView(
@@ -136,19 +131,16 @@ class _UserPageState extends State<UserPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                              widget.isSelfPage
-                                  ? '@${appController.currentUserModels.last.name}'
-                                  : '@${appController.videoModels[appController.indexVideo.value].mapUserModel['name']}',
-                              style: StandardTextStyle.big,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '@${appController.videoModels[appController.indexVideo.value].mapUserModel['name']}',
+                                  style: StandardTextStyle.big,
+                                ),
+                              ],
                             ),
                             Container(height: 8),
-                            // Text(
-                            //   '朴实无华，且枯燥',
-                            //   style: StandardTextStyle.smallWithOpacity.apply(
-                            //     color: Colors.white,
-                            //   ),
-                            // ),
                             Container(height: 10),
                             Row(
                               children: <Widget>[
@@ -189,7 +181,9 @@ class _UserPageState extends State<UserPage> {
                           ),
                         ),
                       ),
-                      UserVideoTable(uid: appController.currentUserModels.last.uid,),
+                      UserVideoTable(
+                        uid: appController.currentUserModels.last.uid,
+                      ),
                     ],
                   ),
                 ),
