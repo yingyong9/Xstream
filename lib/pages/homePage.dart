@@ -2,7 +2,6 @@ import 'package:flutter_tiktok/models/user_model.dart';
 import 'package:flutter_tiktok/models/video_model.dart';
 import 'package:flutter_tiktok/pages/authen.dart';
 import 'package:flutter_tiktok/pages/displayPost.dart';
-import 'package:flutter_tiktok/pages/display_profile.dart';
 import 'package:flutter_tiktok/pages/searchPage.dart';
 import 'package:flutter_tiktok/pages/userPage.dart';
 import 'package:flutter_tiktok/style/physics.dart';

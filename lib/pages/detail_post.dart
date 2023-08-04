@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tiktok/utility/app_controller.dart';
+import 'package:flutter_tiktok/utility/app_dialog.dart';
 import 'package:flutter_tiktok/utility/app_service.dart';
 import 'package:flutter_tiktok/utility/app_snackbar.dart';
 import 'package:flutter_tiktok/views/widget_form.dart';
@@ -51,9 +52,12 @@ class _DetailPostState extends State<DetailPost> {
   void initState() {
     super.initState();
     if (appController.currentUserModels.isNotEmpty) {
-      phoneContactController.text = appController.currentUserModels.last.phoneContact ?? '';
-      linkLineController.text = appController.currentUserModels.last.linkLine ?? '';
-      linkMessageController.text = appController.currentUserModels.last.linkMessaging ?? '';
+      phoneContactController.text =
+          appController.currentUserModels.last.phoneContact ?? '';
+      linkLineController.text =
+          appController.currentUserModels.last.linkLine ?? '';
+      linkMessageController.text =
+          appController.currentUserModels.last.linkMessaging ?? '';
     }
   }
 
@@ -161,7 +165,9 @@ class _DetailPostState extends State<DetailPost> {
                                     const SizedBox(
                                       height: 8,
                                     ),
-                                    WidgetForm(textEditingController: phoneContactController,
+                                    WidgetForm(
+                                      textEditingController:
+                                          phoneContactController,
                                       hint: 'phone',
                                       prefixWidget: Column(
                                         mainAxisAlignment:
@@ -177,7 +183,8 @@ class _DetailPostState extends State<DetailPost> {
                                     const SizedBox(
                                       height: 8,
                                     ),
-                                    WidgetForm(textEditingController: linkLineController,
+                                    WidgetForm(
+                                      textEditingController: linkLineController,
                                       hint: 'LinkLine',
                                       prefixWidget: Column(
                                         mainAxisAlignment:
@@ -193,7 +200,9 @@ class _DetailPostState extends State<DetailPost> {
                                     const SizedBox(
                                       height: 8,
                                     ),
-                                    WidgetForm(textEditingController: linkMessageController,
+                                    WidgetForm(
+                                      textEditingController:
+                                          linkMessageController,
                                       hint: 'LinkMessaging',
                                       prefixWidget: Column(
                                         mainAxisAlignment:
@@ -238,6 +247,8 @@ class _DetailPostState extends State<DetailPost> {
           color: ColorPlate.red,
           label: 'โพสต์',
           pressFunc: () async {
+            AppDialog().dialogProgress();
+
             if (appController.files.isEmpty) {
               // Video Only
 
@@ -245,41 +256,47 @@ class _DetailPostState extends State<DetailPost> {
                   fileThumbnail: widget.fileThumbnail,
                   nameFile: widget.nameFileImage);
 
-              AppService().processFtpUploadAndInsertDataVideo(
-                  fileVideo: widget.fileVideo,
-                  nameFileVideo: widget.nameFileVideo,
-                  urlThumbnail: urlImage!,
-                  detail: detailController.text);
+              AppService()
+                  .processFtpUploadAndInsertDataVideo(
+                      fileVideo: widget.fileVideo,
+                      nameFileVideo: widget.nameFileVideo,
+                      urlThumbnail: urlImage!,
+                      detail: detailController.text)
+                  .then((value) => Get.back());
             } else {
               // Have Product
 
               if ((nameController.text.isEmpty) ||
                   (priceController.text.isEmpty) ||
                   (affiliateController.text.isEmpty)) {
+                Get.back();
                 AppSnackBar(
                         title: 'มีช่องว่าง',
                         message: 'ชื่อ, ราคา และ นายหน้าสินค้า ต้องมี')
                     .errorSnackBar();
-              } else {}
+              } else {
+                String? urlImageProduct =
+                    await AppService().processUploadFile(path: 'product');
 
-              String? urlImageProduct =
-                  await AppService().processUploadFile(path: 'product');
+                String? urlImage = await AppService()
+                    .processUploadThumbnailVideo(
+                        fileThumbnail: widget.fileThumbnail,
+                        nameFile: widget.nameFileImage);
 
-              String? urlImage = await AppService().processUploadThumbnailVideo(
-                  fileThumbnail: widget.fileThumbnail,
-                  nameFile: widget.nameFileImage);
-
-              AppService().processFtpUploadAndInsertDataVideo(
-                fileVideo: widget.fileVideo,
-                nameFileVideo: widget.nameFileVideo,
-                urlThumbnail: urlImage!,
-                detail: detailController.text,
-                nameProduct: nameController.text,
-                priceProduct: priceController.text,
-                stockProduct: stockController.text,
-                affiliateProduct: affiliateController.text,
-                urlProduct: urlImageProduct,
-              );
+                AppService()
+                    .processFtpUploadAndInsertDataVideo(
+                      fileVideo: widget.fileVideo,
+                      nameFileVideo: widget.nameFileVideo,
+                      urlThumbnail: urlImage!,
+                      detail: detailController.text,
+                      nameProduct: nameController.text,
+                      priceProduct: priceController.text,
+                      stockProduct: stockController.text,
+                      affiliateProduct: affiliateController.text,
+                      urlProduct: urlImageProduct,
+                    )
+                    .then((value) => Get.back());
+              }
             }
           },
         ),
