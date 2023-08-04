@@ -163,7 +163,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       canPop: true,
       onPop: () {
         tkController.animateToMiddle();
-      }, 
+      },
     );
     var searchPage = SearchPage(
       onPop: tkController.animateToMiddle,
@@ -200,17 +200,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               var player = _videoListController.playerOfIndex(i)!;
               var data = player.videoInfo!;
 
-              
-
               Widget buttons = TikTokButtonColumn(
                 isFavorite: isF,
                 onAvatar: () {
-                 
+                  UserModel userModel = UserModel.fromMap(
+                      appController.videoModels[i].mapUserModel);
 
-                  UserModel userModel = UserModel.fromMap(appController.videoModels[i].mapUserModel);
-
-                  
-                  Get.to( DisplayPost(isSelfPage: true, postUserModel: userModel,));
+                  Get.to(DisplayPost(
+                    isSelfPage: true,
+                    postUserModel: userModel,
+                  ));
                 },
                 onFavorite: () {
                   setState(() {
@@ -227,7 +226,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   );
                 },
                 onShare: () {},
-                videoModel: appController.videoModels[i],
+                videoModel: i < appController.videoModels.length
+                    ? appController.videoModels[i]
+                    : appController.videoModels.last,
               );
               // video
               Widget currentVideo = Center(
@@ -269,7 +270,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               return currentVideo;
             },
             onPageChanged: (value) {
-              appController.indexVideo.value = value;
+              print('##4aug value =======> $value');
+              if (value < appController.videoModels.length) {
+                appController.indexVideo.value = value;
+              } else {
+                
+              }
             },
           ),
           currentPage ?? Container(),

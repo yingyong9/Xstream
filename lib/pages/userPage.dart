@@ -33,8 +33,10 @@ class _UserPageState extends State<UserPage> {
   @override
   void initState() {
     super.initState();
-    AppService()
+    AppService().findCurrentUserModel().then((value) {
+      AppService()
         .findUrlImageVideo(uid: appController.currentUserModels.last.uid);
+    });
   }
 
   @override
@@ -134,7 +136,7 @@ class _UserPageState extends State<UserPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
+                                 Text(
                                   '@${appController.videoModels[appController.indexVideo.value].mapUserModel['name']}',
                                   style: StandardTextStyle.big,
                                 ),
