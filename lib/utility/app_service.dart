@@ -276,6 +276,7 @@ class AppService {
             nameFileImage: nameFileImage));
       }
     } on Exception catch (e) {
+      print(e.toString());
       AppSnackBar(
               title: 'เปลี่ยนวีดีโอ',
               message: 'ขออภัยด้วยไม่สามารถใช้ วีดีโอนี่ได้')
