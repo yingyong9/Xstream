@@ -15,6 +15,7 @@ class VideoModel {
   final String? stockProduct;
   final String? affiliateProduct;
   final String? urlProduct;
+  final String uidPost;
 
 
 
@@ -31,6 +32,7 @@ class VideoModel {
     this.stockProduct,
     this.affiliateProduct,
     this.urlProduct,
+    required this.uidPost,
   });
 
   Map<String, dynamic> toMap() {
@@ -46,12 +48,13 @@ class VideoModel {
       'stockProduct': stockProduct,
       'affiliateProduct': affiliateProduct,
       'urlProduct': urlProduct,
+      'uidPost': uidPost,
     };
   }
 
   factory VideoModel.fromMap(Map<String, dynamic> map) {
     return VideoModel(
-      url: (map['url'] ?? '') as String,
+       url: (map['url'] ?? '') as String,
       image: (map['image'] ?? '') as String,
       desc: map['desc'] ?? '',
       timestamp: map['timestamp'] ?? Timestamp(0, 0),
@@ -62,6 +65,7 @@ class VideoModel {
       stockProduct: map['stockProduct'] ?? '',
       affiliateProduct: map['affiliateProduct'] ?? '',
       urlProduct: map['urlProduct'] ?? '',
+      uidPost: (map['uidPost'] ?? '') as String,
     );
   }
 

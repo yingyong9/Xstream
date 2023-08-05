@@ -33,10 +33,10 @@ class _UserPageState extends State<UserPage> {
   @override
   void initState() {
     super.initState();
-    AppService().findCurrentUserModel().then((value) {
-      AppService()
-        .findUrlImageVideo(uid: appController.currentUserModels.last.uid);
-    });
+    // AppService().findCurrentUserModel().then((value) {
+    //   AppService()
+    //     .findUrlImageVideo(uid: appController.currentUserModels.last.uid);
+    // });
   }
 
   @override
@@ -79,41 +79,16 @@ class _UserPageState extends State<UserPage> {
               width: 1,
             ),
           ),
-          child: Obx(() {
-            print(
-                '##18july currentUserModel ---> ${appController.currentUserModels.length}');
-            return appController.currentUserModels.isEmpty
-                ? ClipOval(
+          child: ClipOval(
                     child: Image.asset(
                       'images/logo3.png',
                       fit: BoxFit.cover,
                     ),
-                  )
-                : widget.isSelfPage
-                    ? ClipOval(
-                        child: Image.network(
-                          appController.currentUserModels.last.urlAvatar,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    : ClipOval(
-                        child: Image.network(
-                          appController
-                              .videoModels[appController.indexVideo.value]
-                              .mapUserModel['urlAvatar'],
-                          fit: BoxFit.cover,
-                        ),
-                      );
-          }),
+                  ),
         ),
       ),
     );
-    Widget body = Obx(() {
-      print(
-          '##2aug postVideomodel ---> ${appController.postVideoModels.length}');
-      return appController.currentUserModels.isEmpty
-          ? const SizedBox()
-          : ListView(
+    Widget body = ListView(
               physics: BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics(),
               ),
@@ -137,7 +112,7 @@ class _UserPageState extends State<UserPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                  Text(
-                                  '@${appController.videoModels[appController.indexVideo.value].mapUserModel['name']}',
+                                  'Name',
                                   style: StandardTextStyle.big,
                                 ),
                               ],
@@ -183,15 +158,14 @@ class _UserPageState extends State<UserPage> {
                           ),
                         ),
                       ),
-                      UserVideoTable(
-                        uid: appController.currentUserModels.last.uid,
-                      ),
+                      // UserVideoTable(
+                      //   uid: appController.currentUserModels.last.uid,
+                      // ),
                     ],
                   ),
                 ),
               ],
             );
-    });
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(

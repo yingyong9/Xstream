@@ -77,6 +77,7 @@ class AppService {
         stockProduct: stockProduct ?? '',
         affiliateProduct: affiliateProduct ?? '',
         urlProduct: urlProduct ?? '',
+        uidPost: appController.currentUserModels.last.uid,
       );
       FirebaseFirestore.instance
           .collection('video')
@@ -359,6 +360,7 @@ class AppService {
   }
 
   Future<void> findUrlImageVideo({required String uid}) async {
+    
     FirebaseFirestore.instance.collection('video').get().then((value) {
       if (appController.postVideoModels.isNotEmpty) {
         appController.postVideoModels.clear();
